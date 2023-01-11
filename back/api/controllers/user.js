@@ -43,3 +43,32 @@ exports.signup = (req, res) => {
 			}
 		});
 };
+
+exports.getUserInfo = (req, res) => {
+	const userId = req.params.userId;
+	User.findById({ _id: userId })
+		.exec()
+		.then(user => {
+			if (user.length < 1) {
+				return res.status(500).json({ message: '유저 정보가 없습니다.' });
+			} else {
+				return res.status(200).json({
+					message: '유저 정보가 조회 되었습니다.',
+					user: {
+						userId: user.userId,
+						userName: user.userName,
+						email: user.email,
+						companyName: user.companyName,
+						companyRegiNum: user.companyRegiNum,
+						telephoneNum: user.telephoneNum,
+						companyAddress: user.companyAddress,
+						businessType: user.businessType,
+						businessItem: user.businessItem,
+					},
+				});
+			}
+		})
+		.catch(err => {
+			return res.status(500).json({ error: err });
+		});
+};
