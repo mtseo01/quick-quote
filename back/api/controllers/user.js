@@ -44,6 +44,50 @@ exports.signup = (req, res) => {
 		});
 };
 
+exports.login = (req, res) => {
+	User.find({ email: req.body.email })
+		.exec()
+		.then(user => {
+			if (user.length < 1) {
+				res.status(404).json({
+					success: false,
+					message: '이메일을 찾을 수 없습니다.',
+				});
+			} else {
+				bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+					if (err) {
+						return res.status(401).json({
+							success: false,
+							message: '비밀번호가 틀렸습니다.',
+						});
+					} else if (result) {
+						const token = jwt.sign(
+							{
+								userId: user[0]._id,
+								email: user[0].email,
+							},
+							process.env.JWT_KEY,
+							{
+								expiresIn: '1h',
+							},
+						);
+						return res.status(200).json({
+							success: true,
+							message: '로그인하였습니다.',
+							token,
+						});
+					}
+				});
+			}
+		})
+		.catch(err => {
+			return res.status(500).json({
+				success: false,
+				error: err,
+			});
+		});
+};
+
 exports.getUserInfo = (req, res) => {
 	const userId = req.params.userId;
 	User.findById({ _id: userId })
@@ -55,7 +99,7 @@ exports.getUserInfo = (req, res) => {
 				return res.status(200).json({
 					message: '유저 정보가 조회 되었습니다.',
 					user: {
-						userId: user.userId,
+						userId: user._id,
 						userName: user.userName,
 						email: user.email,
 						companyName: user.companyName,
