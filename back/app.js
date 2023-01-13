@@ -6,8 +6,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
-const userRouter = require('./api/routes/user');
 const morgan = require('morgan');
+
+const userRouter = require('./api/routes/user');
+const clientRouter = require('./api/routes/client');
 
 mongoose.set('strictQuery', true);
 mongoose.connect(
@@ -24,5 +26,6 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use('/user', userRouter);
+app.use('/client', clientRouter);
 
 module.exports = app;
