@@ -41,3 +41,18 @@ exports.createClient = (req, res) => {
 		}
 	});
 };
+
+exports.getClientAll = (req, res) => {
+	const createrId = req.params.createrId;
+	Client.find({ creater: createrId })
+		.exec()
+		.then(docs => {
+			res.status(200).json({
+				count: docs.length,
+				docs,
+			});
+		})
+		.catch(err => {
+			res.status(500).json({ error: err });
+		});
+};
