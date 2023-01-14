@@ -44,15 +44,42 @@ exports.createClient = (req, res) => {
 
 exports.getClientAll = (req, res) => {
 	const createrId = req.params.createrId;
-	Client.find({ creater: createrId })
+	User.findById({ _id: createrId })
 		.exec()
-		.then(docs => {
-			res.status(200).json({
-				count: docs.length,
-				docs,
-			});
+		.then(creater => {
+			if (!creater) {
+				return res.status(404).json({
+					success: false,
+					message: '요청 실패, 거래처 정보를 찾을 수 없습니다.',
+				});
+			} else {
+				Client.find({ creater: createrId })
+					.exec()
+					.then(docs => {
+						if (docs.length <= 0) {
+							return res.status(404).json({
+								success: false,
+								message: '거래처 정보가 없습니다.',
+							});
+						} else {
+							res.status(200).json({
+								success: true,
+								message: `${docs.length}개의 거래처 정보를 조회하였습니다.`,
+								count: docs.length,
+								docs,
+							});
+						}
+					})
+					.catch(err => {
+						res.status(500).json({
+							success: false,
+							message: '에러 발생',
+							error: err,
+						});
+					});
+			}
 		})
 		.catch(err => {
-			res.status(500).json({ error: err });
+			return res.status(500).json({ error: err });
 		});
 };
