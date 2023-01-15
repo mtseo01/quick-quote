@@ -49,7 +49,7 @@ exports.login = (req, res) => {
 		.exec()
 		.then(user => {
 			if (user.length < 1) {
-				res.status(404).json({
+				res.status(401).json({
 					success: false,
 					message: '이메일을 찾을 수 없습니다.',
 				});
