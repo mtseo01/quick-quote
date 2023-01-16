@@ -5,9 +5,9 @@ const Client = require('../models/client');
 // const jwt = require('jsonwebtoken');
 
 exports.createClient = (req, res) => {
-	User.findById(req.body.creater).then(user => {
+	User.findById(req.userData.userId).then(user => {
 		if (!user) {
-			return res.status(404).json({
+			return res.status(403).json({
 				success: false,
 				message: '클라이언트 생성을 실패하였습니다. (Creater id not found)',
 			});
@@ -20,8 +20,8 @@ exports.createClient = (req, res) => {
 				telephoneNum: req.body.telephoneNum,
 				companyAddress: req.body.companyAddress,
 				email: req.body.email,
-				creater: req.body.creater,
-				// creater: req.userData._id, // 필수
+
+				creater: req.userData.userId, // 필수
 			});
 			client
 				.save()
@@ -29,7 +29,6 @@ exports.createClient = (req, res) => {
 					return res.status(201).json({
 						success: true,
 						message: '클라이언트 생성을 성공하였습니다.',
-						// test
 						result,
 					});
 				})
@@ -44,6 +43,13 @@ exports.createClient = (req, res) => {
 
 exports.getClientAll = (req, res) => {
 	const createrId = req.params.createrId;
+	const userId = req.userData.userId;
+	if (createrId !== userId) {
+		return res.status(403).json({
+			success: false,
+			message: '권한이 없습니다.',
+		});
+	}
 	User.findById({ _id: createrId })
 		.exec()
 		.then(creater => {
