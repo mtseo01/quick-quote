@@ -71,10 +71,9 @@ exports.login = (req, res) => {
 								expiresIn: '1h',
 							},
 						);
-						return res.status(200).json({
+						return res.status(200).cookie('token', token).json({
 							success: true,
 							message: '로그인하였습니다.',
-							token,
 						});
 					}
 				});
