@@ -5,6 +5,13 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const cookieOption = {
+	httpOnly: true,
+	sameSite: 'none',
+	secure: true,
+	domain: 'localhost',
+};
+
 exports.signup = (req, res) => {
 	User.find({ email: req.body.email })
 		.exec()
@@ -71,7 +78,7 @@ exports.login = (req, res) => {
 								expiresIn: '1h',
 							},
 						);
-						return res.status(200).cookie('token', token).json({
+						return res.status(200).cookie('token', token, cookieOption).json({
 							success: true,
 							message: '로그인하였습니다.',
 						});
@@ -88,7 +95,7 @@ exports.login = (req, res) => {
 };
 
 exports.getUserInfo = (req, res) => {
-	const userId = req.params.userId;
+	const userId = req.userData.userId;
 	User.findById({ _id: userId })
 		.exec()
 		.then(user => {
