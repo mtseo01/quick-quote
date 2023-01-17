@@ -44,7 +44,8 @@
 	</div>
 </template>
 <script>
-import axios from 'axios';
+// import axios from 'axios';
+import { registerUser } from '@/api/user';
 export default {
 	components: {},
 	data() {
@@ -77,12 +78,9 @@ export default {
 				businessType: this.businessType,
 				businessItem: this.businessItem,
 			};
-
-			const response = await axios.post(
-				'http://localhost:3000/user/signup',
-				userObj,
-			);
+			const response = await registerUser(userObj);
 			console.log(response.data);
+			this.$router.push({ name: 'main' });
 		},
 	},
 };

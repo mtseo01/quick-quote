@@ -13,7 +13,8 @@
 	</form>
 </template>
 <script>
-import axios from 'axios';
+// import axios from 'axios';
+import { loginUser } from '@/api/user';
 export default {
 	components: {},
 	data() {
@@ -32,11 +33,8 @@ export default {
 				email: this.email,
 				password: this.password,
 			};
-			const response = await axios.post(
-				'http://localhost:3000/user/login',
-				userObj,
-				{ withCredentials: true },
-			);
+			const response = await loginUser(userObj);
+
 			console.log(response.data);
 			this.$router.push({ name: 'main' });
 		},
