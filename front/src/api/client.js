@@ -5,4 +5,8 @@ function registerClient(clientObj) {
 	return instance.post('client', clientObj, { withCredentials: true });
 }
 
-export { registerClient };
+function getClientAll() {
+	return instance.get('client', { withCredentials: true });
+}
+
+export { registerClient, getClientAll };
