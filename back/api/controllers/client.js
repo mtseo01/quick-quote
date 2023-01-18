@@ -42,14 +42,7 @@ exports.createClient = (req, res) => {
 };
 
 exports.getClientAll = (req, res) => {
-	const createrId = req.params.createrId;
-	const userId = req.userData.userId;
-	if (createrId !== userId) {
-		return res.status(403).json({
-			success: false,
-			message: '권한이 없습니다.',
-		});
-	}
+	const createrId = req.userData.userId;
 	User.findById({ _id: createrId })
 		.exec()
 		.then(creater => {
