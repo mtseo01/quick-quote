@@ -5,5 +5,6 @@ const checkAuth = require('../middleware/check-auth');
 
 router.post('/', checkAuth, clientController.createClient);
 router.get('/', checkAuth, clientController.getClientAll);
+router.get('/:clientId', checkAuth, clientController.getClient);
 
 module.exports = router;

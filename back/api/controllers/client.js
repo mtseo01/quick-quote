@@ -82,3 +82,23 @@ exports.getClientAll = (req, res) => {
 			return res.status(500).json({ error: err });
 		});
 };
+
+exports.getClient = (req, res) => {
+	let clientId = req.params.clientId;
+	Client.findById({ _id: clientId })
+		.exec()
+		.then(doc => {
+			return res.status(200).json({
+				success: true,
+				message: `거래처 ${doc.companyName}의 정보를 조회하였습니다.`,
+				doc,
+			});
+		})
+		.catch(err => {
+			return res.status(500).json({
+				success: false,
+				message: '조회를 실패하였습니다.',
+				error: err,
+			});
+		});
+};
