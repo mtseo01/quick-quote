@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const Client = require('../models/client');
+const router = require('../routes/client');
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
@@ -100,5 +101,20 @@ exports.getClient = (req, res) => {
 				message: '조회를 실패하였습니다.',
 				error: err,
 			});
+		});
+};
+
+exports.updateClient = (req, res) => {
+	let clientId = req.params.clientId;
+	Client.findByIdAndUpdate(clientId, { $set: req.body }, { new: true })
+		.then(result => {
+			return res.status(200).json({
+				success: true,
+				message: '거래처 정보가 수정 되었습니다.',
+				result,
+			});
+		})
+		.catch(err => {
+			return res.status(500).json({ error: err });
 		});
 };
