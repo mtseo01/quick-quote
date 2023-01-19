@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use('/user', userRouter);
-app.use('/client', clientRouter);
+app.use('/users', userRouter);
+app.use('/clients', clientRouter);
 
 module.exports = app;
