@@ -127,3 +127,22 @@ exports.getUserInfo = (req, res) => {
 			return res.status(500).json({ error: err });
 		});
 };
+
+exports.updateUser = (req, res) => {
+	let userId = req.params.userId;
+	User.findByIdAndUpdate(userId, { $set: req.body }, { new: true })
+		.then(result => {
+			return res.status(200).json({
+				success: true,
+				message: '유저 정보를 업데이트 하였습니다.',
+				result,
+			});
+		})
+		.catch(err => {
+			return res.status(500).json({
+				success: false,
+				message: '유저 업데이트를 실패하였습니다.',
+				error: err,
+			});
+		});
+};
