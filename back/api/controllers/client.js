@@ -86,14 +86,24 @@ exports.getClientAll = (req, res) => {
 
 exports.getClient = (req, res) => {
 	let clientId = req.params.clientId;
+	let userId = req.userData.userId;
+	console.log('userId ', userId);
 	Client.findById({ _id: clientId })
+		.populate('creater', '_id')
 		.exec()
 		.then(doc => {
-			return res.status(200).json({
-				success: true,
-				message: `거래처 ${doc.companyName}의 정보를 조회하였습니다.`,
-				doc,
-			});
+			if (doc.creater.id !== userId) {
+				return res.status(401).json({
+					success: false,
+					message: '접근 권한이 없습니다.',
+				});
+			} else {
+				return res.status(200).json({
+					success: true,
+					message: `거래처 ${doc.companyName}의 정보를 조회하였습니다.`,
+					doc,
+				});
+			}
 		})
 		.catch(err => {
 			return res.status(500).json({
