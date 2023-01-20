@@ -13,10 +13,10 @@ const clientRouter = require('./api/routes/client');
 
 mongoose.set('strictQuery', true);
 mongoose.connect(
-	`mongodb+srv://mtseo:${process.env.DB_PWD}@cluster0.nxorzkg.mongodb.net/quotation?retryWrites=true&w=majority`,
-	{
-		useNewUrlParser: true,
-	},
+  `mongodb+srv://mtseo:${process.env.DB_PWD}@cluster0.nxorzkg.mongodb.net/quotation?retryWrites=true&w=majority`,
+  {
+    useNewUrlParser: true,
+  },
 );
 
 app.use(morgan('dev'));
