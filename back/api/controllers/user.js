@@ -63,9 +63,9 @@ exports.login = (req, res) => {
 			} else {
 				bcrypt.compare(req.body.password, user[0].password, (err, result) => {
 					if (err) {
-						return res.status(401).json({
+						return res.status(500).json({
 							success: false,
-							message: '비밀번호가 틀렸습니다.',
+							error: err,
 						});
 					} else if (result) {
 						const token = jwt.sign(
@@ -81,6 +81,11 @@ exports.login = (req, res) => {
 						return res.status(200).cookie('token', token, cookieOption).json({
 							success: true,
 							message: '로그인하였습니다.',
+						});
+					} else {
+						return res.status(401).json({
+							success: false,
+							message: '비밀번호가 틀렸습니다.',
 						});
 					}
 				});
