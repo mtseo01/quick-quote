@@ -39,7 +39,7 @@
 			</div>
 
 			<button @click="signup">회원가입</button>
-			<!-- <p>{{ logMessage }}</p> -->
+			<p>{{ logMessage }}</p>
 		</form>
 	</div>
 </template>
@@ -59,6 +59,7 @@ export default {
 			companyAddress: '',
 			businessType: '',
 			businessItem: '',
+			logMessage: '',
 		};
 	},
 	setup() {},
@@ -67,20 +68,24 @@ export default {
 	unmounted() {},
 	methods: {
 		async signup() {
-			const userObj = {
-				userName: this.userName,
-				email: this.email,
-				password: this.password,
-				companyName: this.companyName,
-				companyRegiNum: this.companyRegiNum,
-				telephoneNum: this.telephoneNum,
-				companyAddress: this.companyAddress,
-				businessType: this.businessType,
-				businessItem: this.businessItem,
-			};
-			const response = await registerUser(userObj);
-			console.log(response.data);
-			this.$router.push({ name: 'main' });
+			try {
+				const userObj = {
+					userName: this.userName,
+					email: this.email,
+					password: this.password,
+					companyName: this.companyName,
+					companyRegiNum: this.companyRegiNum,
+					telephoneNum: this.telephoneNum,
+					companyAddress: this.companyAddress,
+					businessType: this.businessType,
+					businessItem: this.businessItem,
+				};
+				const response = await registerUser(userObj);
+				console.log(response.data);
+				this.$router.push({ name: 'main' });
+			} catch (error) {
+				this.logMessage = error.response.data.message;
+			}
 		},
 	},
 };

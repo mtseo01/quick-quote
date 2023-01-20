@@ -20,6 +20,7 @@
 		<div><input placeholder="주소" type="text" v-model="companyAddress" /></div>
 
 		<button type="submit" @click="submit">등록하기</button>
+		<p>{{ logMessage }}</p>
 	</form>
 </template>
 <script>
@@ -35,6 +36,8 @@ export default {
 			email: '',
 			telephoneNum: '',
 			companyAddress: '',
+			// 로그메세지
+			logMessage: '',
 		};
 	},
 	setup() {},
@@ -43,17 +46,22 @@ export default {
 	unmounted() {},
 	methods: {
 		async submit() {
-			const clientObj = {
-				companyName: this.companyName, // 필수
-				clientName: this.clientName,
-				companyRegiNum: this.companyRegiNum,
-				email: this.email,
-				telephoneNum: this.telephoneNum,
-				companyAddress: this.companyAddress,
-			};
-			const { data } = await registerClient(clientObj);
+			try {
+				const clientObj = {
+					companyName: this.companyName, // 필수
+					clientName: this.clientName,
+					companyRegiNum: this.companyRegiNum,
+					email: this.email,
+					telephoneNum: this.telephoneNum,
+					companyAddress: this.companyAddress,
+				};
+				const { data } = await registerClient(clientObj);
 
-			console.log(data);
+				console.log(data);
+			} catch (error) {
+				console.log(error.response.data.message);
+				this.logMessage = error.response.data.message;
+			}
 		},
 	},
 };

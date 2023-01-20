@@ -61,17 +61,26 @@ export default {
 	unmounted() {},
 	methods: {
 		async fetch() {
-			const clientId = this.$route.params.id;
-			const { data } = await getClinet(clientId);
+			try {
+				const clientId = this.$route.params.id;
+				const { data } = await getClinet(clientId);
 
-			this.client = data.doc;
+				this.client = data.doc;
+				this.logMessage = data.message;
+			} catch (error) {
+				this.logMessage = error.response.data.message;
+			}
 		},
 		async update() {
-			let clientId = this.client._id;
-			const clientObj = this.client;
-			const { data } = await updateClient(clientId, clientObj);
+			try {
+				let clientId = this.client._id;
+				const clientObj = this.client;
+				const { data } = await updateClient(clientId, clientObj);
 
-			this.logMessage = data.message;
+				this.logMessage = data.message;
+			} catch (error) {
+				this.logMessage = error.response.data.message;
+			}
 		},
 	},
 };

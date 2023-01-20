@@ -9,7 +9,7 @@
 			<input id="password" type="text" v-model="password" />
 		</div>
 		<button @click="login">로그인</button>
-		<!-- <p>{{ logMessage }}</p> -->
+		<p>{{ logMessage }}</p>
 	</form>
 </template>
 <script>
@@ -21,6 +21,7 @@ export default {
 		return {
 			email: '',
 			password: '',
+			logMessage: '',
 		};
 	},
 	setup() {},
@@ -29,14 +30,19 @@ export default {
 	unmounted() {},
 	methods: {
 		async login() {
-			const userObj = {
-				email: this.email,
-				password: this.password,
-			};
-			const response = await loginUser(userObj);
-
-			console.log(response.data);
-			this.$router.push({ name: 'main' });
+			try {
+				const userObj = {
+					email: this.email,
+					password: this.password,
+				};
+				const response = await loginUser(userObj);
+				console.log(response.data);
+				this.logMessage = response.data.message;
+				this.$router.push({ name: 'main' });
+			} catch (error) {
+				console.log(error.response.data.message);
+				this.logMessage = error.response.data.message;
+			}
 		},
 	},
 };
