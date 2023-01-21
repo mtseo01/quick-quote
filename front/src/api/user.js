@@ -15,4 +15,9 @@ function getUserInfo() {
   return instance.get('users/information', { withCredentials: true });
 }
 
-export { registerUser, loginUser, getUserInfo };
+// 유저정보 수정 API
+function updateUser(userId, userObj) {
+  return instance.put('users/' + userId, userObj, { withCredentials: true });
+}
+
+export { registerUser, loginUser, getUserInfo, updateUser };
