@@ -102,3 +102,18 @@ exports.getQuotation = (req, res) => {
       });
     });
 };
+
+exports.updateQuotation = (req, res) => {
+  let quotationId = req.params.id;
+  Quotation.findByIdAndUpdate(quotationId, { $set: req.body }, { new: true })
+    .then(result => {
+      return res.status(200).json({
+        success: true,
+        message: '견적서 정보가 수정 되었습니다.',
+        result,
+      });
+    })
+    .catch(err => {
+      return res.status(500).json({ error: err });
+    });
+};
