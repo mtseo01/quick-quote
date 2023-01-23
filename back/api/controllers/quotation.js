@@ -117,3 +117,23 @@ exports.updateQuotation = (req, res) => {
       return res.status(500).json({ error: err });
     });
 };
+
+exports.deleteQuotation = (req, res) => {
+  let quotationId = req.params.id;
+  Quotation.deleteOne({ _id: quotationId })
+    .exec()
+    .then(result => {
+      return res.status(200).json({
+        success: true,
+        message: '견적서를 삭제하였습니다.',
+        id: result._id,
+      });
+    })
+    .catch(err => {
+      return res.status(500).json({
+        success: false,
+        messgae: '삭제를 실패하였습니다.',
+        error: err,
+      });
+    });
+};
