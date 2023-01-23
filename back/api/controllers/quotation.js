@@ -75,3 +75,30 @@ exports.getQuotationsAll = (req, res) => {
       });
     });
 };
+
+exports.getQuotation = (req, res) => {
+  const quotationId = req.params.id;
+  let createrId = req.userData.userId;
+  Quotation.findById({ _id: quotationId })
+    .populate('creater', '_id')
+    .exec()
+    .then(doc => {
+      if (doc.creater.id !== createrId) {
+        return res.status(401).json({
+          success: false,
+          message: '권한이 없습니다.',
+        });
+      } else {
+        return res.status(200).json({
+          success: true,
+          doc,
+        });
+      }
+    })
+    .catch(err => {
+      return res.status(500).json({
+        success: false,
+        error: err,
+      });
+    });
+};

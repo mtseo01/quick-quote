@@ -5,5 +5,6 @@ const checkAuth = require('../middleware/check-auth');
 
 router.post('/', checkAuth, quotationController.createQuotation);
 router.get('/', checkAuth, quotationController.getQuotationsAll);
+router.get('/:id', checkAuth, quotationController.getQuotation);
 
 module.exports = router;
