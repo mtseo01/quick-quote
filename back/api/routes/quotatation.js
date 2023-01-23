@@ -3,6 +3,7 @@ const router = express.Router();
 const quotationController = require('../controllers/quotation');
 const checkAuth = require('../middleware/check-auth');
 
-router.post('/', quotationController.createQuotation);
+router.post('/', checkAuth, quotationController.createQuotation);
+router.get('/', checkAuth, quotationController.getQuotationsAll);
 
 module.exports = router;
