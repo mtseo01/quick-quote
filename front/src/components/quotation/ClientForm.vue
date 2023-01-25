@@ -1,12 +1,11 @@
 <template>
-  <form @submit.prevent>
+  <form @submit.prevent @change="sendData">
     <div>
       <span>수신인</span>
       <button @click="sendClient">검색</button>
     </div>
     <div>
       <input
-        @input="sendData"
         placeholder="상호명(*필수)"
         type="text"
         v-model="client.companyName"
@@ -26,7 +25,9 @@
         v-model="client.companyRegiNum"
       />
     </div>
-    <div><input placeholder="이메일" type="text" v-model="client.email" /></div>
+    <div>
+      <input placeholder="이메일" type="text" v-model="client.email" />
+    </div>
     <div>
       <input placeholder="전화번호" type="text" v-model="client.telephoneNum" />
     </div>
@@ -54,11 +55,7 @@ export default {
       // logMessage: '',
     };
   },
-  computed: {
-    sendData() {
-      return this.$emit('client-data', this.client);
-    },
-  },
+  computed: {},
   setup() {},
   created() {
     // this.fetch();
@@ -66,6 +63,9 @@ export default {
   mounted() {},
   unmounted() {},
   methods: {
+    sendData() {
+      return this.$emit('client-data', this.client);
+    },
     // async fetch() {
     //   try {
     //     const clientId = this.$route.params.id;

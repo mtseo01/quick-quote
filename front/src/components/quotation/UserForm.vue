@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container-user">
-      <table>
+      <table @change="sendData">
         <tr>
           <td rowspan="6">공<br />급<br />자</td>
           <td>사업자등록번호</td>
@@ -72,11 +72,7 @@ export default {
       },
     };
   },
-  computed: {
-    changeData() {
-      return this.$emit('user-data', this.user);
-    },
-  },
+
   setup() {},
   created() {},
   mounted() {},
