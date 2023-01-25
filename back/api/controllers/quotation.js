@@ -6,6 +6,7 @@ exports.createQuotation = (req, res) => {
   let createrId = req.userData.userId;
   const quotation = new Quotation({
     _id: new mongoose.Types.ObjectId(),
+    quoteTitle: req.body.quoteTitle,
     quoteNumber: req.body.quoteNumber,
     quoteDate: req.body.quoteDate,
     user: {
@@ -26,10 +27,11 @@ exports.createQuotation = (req, res) => {
       companyAddress: req.body.client.companyAddress,
       email: req.body.client.email,
     },
-    productList: req.body.productList,
-    etc: req.body.etc,
+    products: req.body.products,
+    amount: req.body.amount,
+    note: req.body.note,
     // creater: req.body.createrId,
-    creater: req.userData.userId,
+    creater: createrId,
   });
   quotation
     .save()
