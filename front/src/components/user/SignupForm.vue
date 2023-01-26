@@ -1,6 +1,9 @@
 <template>
   <div>
-    <form @submit.prevent>
+    <div v-if="alert" class="alert-form">
+      {{ logMessage }}
+    </div>
+    <form class="signup-form" @submit.prevent>
       <div>
         <label for="email">email</label>
         <input id="email" type="text" v-model="email" />
@@ -29,18 +32,23 @@
         <label for="companyAddress">회사 주소</label>
         <input id="companyAddress" type="text" v-model="companyAddress" />
       </div>
-      <div>
-        <label for="businessType">업태</label>
-        <input id="businessType" type="text" v-model="businessType" />
+      <p @click="add">+ 추가 정보 입력하기</p>
+      <div v-if="addInfo">
+        <div>
+          <label for="businessType">업태</label>
+          <input id="businessType" type="text" v-model="businessType" />
+        </div>
+        <div>
+          <label for="businessItem">업종</label>
+          <input id="businessItem" type="text" v-model="businessItem" />
+        </div>
       </div>
-      <div>
-        <label for="businessItem">업종</label>
-        <input id="businessItem" type="text" v-model="businessItem" />
-      </div>
-
       <button @click="signup">회원가입</button>
-      <p>{{ logMessage }}</p>
     </form>
+    <div class="login-form">
+      <span>이미 회원이신가요?</span>
+      <router-link :to="{ name: 'login' }">로그인</router-link>
+    </div>
   </div>
 </template>
 <script>
@@ -60,6 +68,8 @@ export default {
       businessType: '',
       businessItem: '',
       logMessage: '',
+      alert: false,
+      addInfo: false,
     };
   },
   setup() {},
@@ -85,8 +95,83 @@ export default {
         this.$router.push({ name: 'main' });
       } catch (error) {
         this.logMessage = error.response.data.message;
+        this.alert = true;
       }
+    },
+    add() {
+      this.addInfo = !this.addInfo;
     },
   },
 };
 </script>
+<style scoped>
+form {
+  border-radius: 8px;
+  padding: 12px 20px 20px;
+  background: rgba(59, 65, 75, 0.836);
+  font-size: 14px;
+  /* font-weight: 500; */
+}
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 2px;
+  text-align: left;
+}
+
+.signup-form input {
+  padding: 5px 12px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  border: 1px solid;
+  border-radius: 4px;
+  width: 280px;
+  height: 25px;
+}
+button {
+  color: white;
+  background-color: rgb(73, 154, 73);
+  display: block;
+  border: none;
+  width: 100%;
+  padding: 5px 12px;
+  margin-top: 8px;
+  border-radius: 4px;
+}
+button:hover {
+  background-color: rgb(90, 172, 90);
+}
+p {
+  color: rgb(0, 97, 252);
+  cursor: pointer;
+  text-align: right;
+}
+p:hover {
+  color: rgb(34, 116, 247);
+}
+div .login-form {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 8px;
+  padding: 20px 20px;
+  background: rgba(59, 65, 75, 0.836);
+  font-size: 14px;
+  margin-top: 20px;
+}
+div .login-form a {
+  color: rgb(0, 97, 252);
+  text-decoration: none;
+}
+div .login-form a:hover {
+  color: rgb(34, 116, 247);
+}
+div .alert-form {
+  color: rgb(251, 39, 39);
+  border-radius: 8px;
+  padding: 20px 20px;
+  background: rgba(59, 65, 75, 0.836);
+  font-size: 14px;
+  margin-bottom: 8px;
+  transition: 0.3s;
+}
+</style>

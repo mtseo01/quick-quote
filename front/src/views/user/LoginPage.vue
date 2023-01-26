@@ -1,5 +1,5 @@
 <template>
-  <div>로그인</div>
+  <h1>로그인</h1>
   <LoginForm></LoginForm>
 </template>
 <script>
@@ -18,3 +18,11 @@ export default {
   methods: {},
 };
 </script>
+<style scoped>
+h1 {
+  color: white;
+  text-align: center;
+  font-weight: regular;
+  margin: 10px;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <div>회원가입</div>
+  <h1>회원가입</h1>
   <SignupForm></SignupForm>
 </template>
 <script>
@@ -18,3 +18,11 @@ export default {
   methods: {},
 };
 </script>
+<style scoped>
+h1 {
+  color: white;
+  text-align: center;
+  font-weight: regular;
+  margin: 10px;
+}
+</style>
