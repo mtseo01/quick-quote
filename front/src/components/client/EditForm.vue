@@ -1,4 +1,7 @@
 <template>
+  <div v-if="alert" class="alert-form">
+    {{ logMessage }}
+  </div>
   <form @submit.prevent>
     <div>
       <input
@@ -31,7 +34,6 @@
 
     <button type="submit" @click="update">변경하기</button>
   </form>
-  <p>{{ logMessage }}</p>
 </template>
 <script>
 import { getClinet, updateClient } from '@/api/client';
@@ -51,6 +53,7 @@ export default {
         },
       ],
       logMessage: '',
+      alert: false,
     };
   },
   setup() {},
@@ -67,8 +70,10 @@ export default {
 
         this.client = data.doc;
         this.logMessage = data.message;
+        this.alert = true;
       } catch (error) {
         this.logMessage = error.response.data.message;
+        this.alert = true;
       }
     },
     async update() {
@@ -78,10 +83,54 @@ export default {
         const { data } = await updateClient(clientId, clientObj);
 
         this.logMessage = data.message;
+        this.alert = true;
       } catch (error) {
         this.logMessage = error.response.data.message;
+        this.alert = true;
       }
     },
   },
 };
 </script>
+<style scoped>
+form {
+  border-radius: 8px;
+  padding: 12px 20px 20px;
+  background: rgba(59, 65, 75, 0.836);
+  font-size: 14px;
+  /* font-weight: 500; */
+}
+input {
+  padding: 5px 12px;
+  margin-top: 4px;
+  margin-bottom: 16px;
+  border: none;
+  border-radius: 4px;
+  width: 280px;
+  height: 25px;
+}
+
+button {
+  color: white;
+  background-color: rgb(73, 154, 73);
+  display: block;
+  border: none;
+  width: 100%;
+  padding: 5px 12px;
+  margin-top: 8px;
+  border-radius: 4px;
+}
+button:hover {
+  background-color: rgb(90, 172, 90);
+}
+
+div .alert-form {
+  color: rgb(0, 97, 252);
+  border-radius: 8px;
+  padding: 20px 20px;
+  background: rgba(59, 65, 75, 0.836);
+  font-size: 14px;
+  margin-bottom: 8px;
+  transition: 0.3s;
+}
+</style>
