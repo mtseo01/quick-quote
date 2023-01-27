@@ -1,4 +1,7 @@
 <template>
+  <div v-if="alert" class="alert-form">
+    {{ logMessage }}
+  </div>
   <form @submit.prevent>
     <div>
       <input placeholder="상호명(*필수)" type="text" v-model="companyName" />
@@ -20,7 +23,6 @@
     <div><input placeholder="주소" type="text" v-model="companyAddress" /></div>
 
     <button type="submit" @click="submit">등록하기</button>
-    <p>{{ logMessage }}</p>
   </form>
 </template>
 <script>
@@ -38,6 +40,7 @@ export default {
       companyAddress: '',
       // 로그메세지
       logMessage: '',
+      alert: false,
     };
   },
   setup() {},
@@ -58,16 +61,56 @@ export default {
         const { data } = await registerClient(clientObj);
 
         console.log(data);
+        this.logMessage = data.message;
+        this.alert = true;
       } catch (error) {
         console.log(error.response.data.message);
         this.logMessage = error.response.data.message;
+        this.alert = true;
       }
     },
   },
 };
 </script>
 <style scoped>
+form {
+  border-radius: 8px;
+  padding: 12px 20px 20px;
+  background: rgba(59, 65, 75, 0.836);
+  font-size: 14px;
+  /* font-weight: 500; */
+}
 input {
-  width: 500px;
+  padding: 5px 12px;
+  margin-top: 4px;
+  margin-bottom: 16px;
+  border: none;
+  border-radius: 4px;
+  width: 280px;
+  height: 25px;
+}
+
+button {
+  color: white;
+  background-color: rgb(73, 154, 73);
+  display: block;
+  border: none;
+  width: 100%;
+  padding: 5px 12px;
+  margin-top: 8px;
+  border-radius: 4px;
+}
+button:hover {
+  background-color: rgb(90, 172, 90);
+}
+
+div .alert-form {
+  color: rgb(0, 97, 252);
+  border-radius: 8px;
+  padding: 20px 20px;
+  background: rgba(59, 65, 75, 0.836);
+  font-size: 14px;
+  margin-bottom: 8px;
+  transition: 0.3s;
 }
 </style>
