@@ -1,4 +1,7 @@
 <template>
+  <div v-if="alert" class="alert-form">
+    {{ logMessage }}
+  </div>
   <form @submit.prevent="update(user.userId)">
     <div>
       <input placeholder="상호명" type="text" v-model="user.companyName" />
@@ -29,7 +32,6 @@
     </div>
     <button type="submit">변경하기</button>
   </form>
-  <p>{{ logMessage }}</p>
 </template>
 <script>
 import { getUserInfo, updateUser } from '@/api/user';
@@ -49,6 +51,8 @@ export default {
         businessType: '', // 업종
         businessItem: '', // 업태
       },
+      logMessage: '',
+      alert: false,
     };
   },
   setup() {},
@@ -62,6 +66,8 @@ export default {
       try {
         const { data } = await getUserInfo();
         this.user = data.user;
+        this.logMessage = data.message;
+        this.alert = true;
       } catch (error) {
         console.log(error.response.data.message);
       }
@@ -69,17 +75,18 @@ export default {
     async update(userId) {
       try {
         const userObj = {
-          userName: this.userName,
-          email: this.email,
-          telephoneNum: this.telephoneNum,
-          companyName: this.companyName,
-          companyRegiNum: this.companyRegiNum,
-          companyAddress: this.companyAddress,
-          businessType: this.businessType, // 업종
-          businessItem: this.businessItem,
+          userName: this.user.userName,
+          email: this.user.email,
+          telephoneNum: this.user.telephoneNum,
+          companyName: this.user.companyName,
+          companyRegiNum: this.user.companyRegiNum,
+          companyAddress: this.user.companyAddress,
+          businessType: this.user.businessType, // 업종
+          businessItem: this.user.businessItem,
         };
-        const res = await updateUser(userId, userObj);
-        console.log(res);
+        const { data } = await updateUser(userId, userObj);
+        this.alert = true;
+        this.logMessage = data.message;
       } catch (error) {
         console.log(error.response.data);
       }
@@ -87,3 +94,45 @@ export default {
   },
 };
 </script>
+<style scoped>
+form {
+  border-radius: 8px;
+  padding: 12px 20px 20px;
+  background: rgba(59, 65, 75, 0.836);
+  font-size: 14px;
+  /* font-weight: 500; */
+}
+input {
+  padding: 5px 12px;
+  margin-top: 4px;
+  margin-bottom: 16px;
+  border: none;
+  border-radius: 4px;
+  width: 280px;
+  height: 25px;
+}
+
+button {
+  color: white;
+  background-color: rgb(73, 154, 73);
+  display: block;
+  border: none;
+  width: 100%;
+  padding: 5px 12px;
+  margin-top: 8px;
+  border-radius: 4px;
+}
+button:hover {
+  background-color: rgb(90, 172, 90);
+}
+
+div .alert-form {
+  color: rgb(0, 97, 252);
+  border-radius: 8px;
+  padding: 20px 20px;
+  background: rgba(59, 65, 75, 0.836);
+  font-size: 14px;
+  margin-bottom: 8px;
+  transition: 0.3s;
+}
+</style>
