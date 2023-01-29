@@ -128,3 +128,23 @@ exports.updateClient = (req, res) => {
       return res.status(500).json({ error: err });
     });
 };
+
+exports.deleteClient = (req, res) => {
+  let clientId = req.params.clientId;
+  Client.deleteOne({ _id: clientId })
+    .exec()
+    .then(result => {
+      return res.status(200).json({
+        success: true,
+        message: '거래처를 삭제하였습니다.',
+        result,
+      });
+    })
+    .catch(err => {
+      return res.status(500).json({
+        success: false,
+        messgae: '삭제를 실패하였습니다.',
+        error: err,
+      });
+    });
+};

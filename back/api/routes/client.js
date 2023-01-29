@@ -7,5 +7,6 @@ router.post('/', checkAuth, clientController.createClient);
 router.get('/', checkAuth, clientController.getClientAll);
 router.get('/:clientId', checkAuth, clientController.getClient);
 router.put('/:clientId', checkAuth, clientController.updateClient);
+router.delete('/:clientId', checkAuth, clientController.deleteClient);
 
 module.exports = router;
