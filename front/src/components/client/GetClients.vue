@@ -4,12 +4,12 @@
     <div v-for="client in clients" :key="client">
       {{ client.companyName }}
       <button @click="getClient(client._id)">수정하기</button>
-      <!-- <button @click="getClient(client._id)">삭제하기</button> -->
+      <button @click="deleteBtn(client._id)">삭제하기</button>
     </div>
   </div>
 </template>
 <script>
-import { getClientAll } from '@/api/client';
+import { getClientAll, deleteClient } from '@/api/client';
 export default {
   components: {},
   data() {
@@ -39,6 +39,17 @@ export default {
     getClient(clientId) {
       console.log(clientId);
       this.$router.push('/clients/' + clientId);
+    },
+    async deleteBtn(clientId) {
+      try {
+        if (confirm('거래처 정보를 삭제하시겠습니까?')) {
+          const res = await deleteClient(clientId);
+          console.log(res);
+          this.getClients();
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

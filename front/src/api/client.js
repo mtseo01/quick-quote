@@ -22,4 +22,10 @@ function updateClient(clientId, clientObj) {
   });
 }
 
-export { registerClient, getClientAll, getClinet, updateClient };
+// 거래처 삭제 API
+function deleteClient(clientId) {
+  return instance.delete('clients/' + clientId, {
+    withCredentials: true,
+  });
+}
+export { registerClient, getClientAll, getClinet, updateClient, deleteClient };
