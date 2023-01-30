@@ -1,4 +1,5 @@
 <template>
+  <h1>거래처 정보 변경</h1>
   <div>
     <EditClient />
   </div>
@@ -19,3 +20,11 @@ export default {
   methods: {},
 };
 </script>
+<style scoped>
+h1 {
+  color: white;
+  text-align: center;
+  font-weight: regular;
+  margin: 10px;
+}
+</style>

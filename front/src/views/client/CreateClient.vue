@@ -1,13 +1,17 @@
 <template>
-  <h1>거래처 리스트</h1>
-  <GetClients />
+  <h1>거래처 등록</h1>
+  <div>
+    <CreateForm />
+  </div>
 </template>
 <script>
-import GetClients from '@/components/client/GetClients.vue';
+import CreateForm from '@/components/client/CreateForm.vue';
 export default {
-  components: { GetClients },
+  components: { CreateForm },
   data() {
-    return {};
+    return {
+      sampleData: '',
+    };
   },
   setup() {},
   created() {},
@@ -16,7 +20,6 @@ export default {
   methods: {},
 };
 </script>
-
 <style scoped>
 h1 {
   color: white;
