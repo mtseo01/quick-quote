@@ -1,11 +1,27 @@
 <template>
   <div>
-    <div>{{ logMessage }}</div>
-    <div v-for="client in clients" :key="client">
-      {{ client.companyName }}
-      <button @click="getClient(client._id)">수정하기</button>
-      <button @click="deleteBtn(client._id)">삭제하기</button>
-    </div>
+    <div class="alert-form">{{ logMessage }}</div>
+
+    <table>
+      <tr class="head">
+        <th class="head-company">Company List</th>
+      </tr>
+      <tr class="content" v-for="client in clients" :key="client">
+        <td>
+          <h4>{{ client.companyName }}</h4>
+          <div class="content-company">
+            <div class="content-company-info">
+              <p>{{ client.clientName }}</p>
+              <p>{{ client.email }}</p>
+            </div>
+            <div>
+              <button @click="getClient(client._id)">수정</button>
+              <button @click="deleteBtn(client._id)">삭제</button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
 <script>
@@ -54,3 +70,45 @@ export default {
   },
 };
 </script>
+<style scoped>
+div .alert-form {
+  color: rgb(0, 97, 252);
+  border-radius: 8px;
+  padding: 20px 20px;
+  background: rgba(59, 65, 75, 0.836);
+  font-size: 14px;
+  margin-bottom: 8px;
+  transition: 0.3s;
+}
+
+table {
+  width: 320px;
+  padding: 20px 20px;
+  border-radius: 8px;
+  text-align: center;
+  background: rgba(59, 65, 75, 0.836);
+}
+
+table th {
+  border-bottom: 1px solid snow;
+  padding-bottom: 5px;
+}
+
+table .content {
+  font-size: 12px;
+}
+table h4 {
+  text-align: left;
+  margin-top: 8px;
+}
+
+.content-company {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px;
+  margin-bottom: 5px;
+}
+.content-company-info {
+  text-align: left;
+}
+</style>
