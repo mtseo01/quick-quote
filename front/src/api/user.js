@@ -20,4 +20,10 @@ function updateUser(userId, userObj) {
   return instance.put('users/' + userId, userObj, { withCredentials: true });
 }
 
-export { registerUser, loginUser, getUserInfo, updateUser };
+// 유저 탈퇴 API
+function deleteUser(userId, password) {
+  return instance.post('users/' + userId, password, {
+    withCredentials: true,
+  });
+}
+export { registerUser, loginUser, getUserInfo, updateUser, deleteUser };
