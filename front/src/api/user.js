@@ -20,10 +20,24 @@ function updateUser(userId, userObj) {
   return instance.put('users/' + userId, userObj, { withCredentials: true });
 }
 
+// 유저 비밀번호 변경 API
+function updatePassword(userId, userObj) {
+  return instance.put('users/password/' + userId, userObj, {
+    withCredentials: true,
+  });
+}
+
 // 유저 탈퇴 API
 function deleteUser(userId, password) {
   return instance.post('users/' + userId, password, {
     withCredentials: true,
   });
 }
-export { registerUser, loginUser, getUserInfo, updateUser, deleteUser };
+export {
+  registerUser,
+  loginUser,
+  getUserInfo,
+  updateUser,
+  deleteUser,
+  updatePassword,
+};
