@@ -6,9 +6,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const cookieOption = {
-  // httpOnly: true,
-  // sameSite: 'none',
-  // secure: true,
+  httpOnly: true,
+  sameSite: 'none',
+  secure: true,
   domain: 'localhost',
 };
 
@@ -147,46 +147,65 @@ exports.updateUser = (req, res) => {
     });
 };
 
-// exports.updatePassword = (req, res) => {
-//   let userId = req.params.userId;
-//   console.log(userId);
-//   let oldPassword = req.body.oldPassword;
-//   let newPassword = req.body.newPassword;
-//   console.log(oldPassword, newPassword);
-// bcrypt.hash(newPassword, 10);
+exports.updatePassword = (req, res) => {
+  let userId = req.params.userId;
+  let password = req.body.password;
+  let newPassword = req.body.newPassword;
 
-//   User.findById({ _id: userId })
-
-//     .then(user => {
-//       bcrypt.compare(oldPassword, user[0].password, (err, result) => {
-//         if (err) {
-//           console.log('compare error');
-//           return res.status(500).json({ error: err });
-//         } else if (result) {
-//           console.log('result');
-//           User.updateOne({ password: newPassword }, { new: true })
-//             .then(res => {
-//               return res.status(200).json({
-//                 success: true,
-//                 message: '유저 비밀번호를 변경하였습니다.',
-//               });
-//             })
-//             .catch(err => {
-//               console.log('수정 오류');
-//               return res.status(500).json({ error: err });
-//             });
-//         } else {
-//           return res.status(401).json({
-//             success: false,
-//             message: '비밀번호가 틀렸습니다.',
-//           });
-//         }
-//       });
-//     })
-//     .catch(err => {
-//       res.status(500).json({ error: err });
-//     });
-// };
+  User.find({ _id: userId })
+    .exec()
+    .then(user => {
+      if (user.length <= 0) {
+        return res.status(401).json({
+          success: false,
+          message: '존재하지 않는 유저입니다.',
+        });
+      } else {
+        bcrypt.compare(password, user[0].password, (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              error: err,
+            });
+          } else if (result) {
+            bcrypt.hash(newPassword, 10, (err, hash) => {
+              if (err) {
+                return res.status(500).json({ error: err });
+              } else {
+                User.findByIdAndUpdate(
+                  userId,
+                  { $set: { password: hash } },
+                  { new: true },
+                )
+                  .then(response => {
+                    return res.status(200).json({
+                      success: true,
+                      message: '비밀번호 변경을 하였습니다.',
+                    });
+                  })
+                  .catch(err => {
+                    return res.status(500).json({
+                      success: false,
+                      message: '실패하였습니다.',
+                      error: err,
+                    });
+                  });
+              }
+            });
+          } else {
+            return res.status(401).json({
+              success: false,
+              message: '비밀번호가 틀렸습니다.',
+            });
+          }
+        });
+      }
+    })
+    .catch(err => {
+      return res.status(500).json({
+        error: err,
+      });
+    });
+};
 
 exports.deleteUser = (req, res) => {
   let userId = req.params.userId;

@@ -15,6 +15,9 @@ router.get('/information', checkAuth, userController.getUserInfo);
 // 특정 유저 정보 수정 API
 router.put('/:userId', checkAuth, userController.updateUser);
 
+// 유저 비밀번호 변경 API
+router.put('/password/:userId', checkAuth, userController.updatePassword);
+
 // 회원 탈퇴 API
 router.post('/:userId', checkAuth, userController.deleteUser);
 
