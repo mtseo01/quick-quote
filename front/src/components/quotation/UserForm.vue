@@ -1,57 +1,33 @@
 <template>
-  <div>
-    <div class="container-user">
-      <table @change="sendData">
-        <tr>
-          <td rowspan="6">공<br />급<br />자</td>
-          <td>사업자등록번호</td>
-          <td colspan="3">
-            <input id="regi-num" type="text" v-model="user.companyRegiNum" />
-            <button @click="getUserInfo">유저 불러오기</button>
-          </td>
-        </tr>
-        <tr>
-          <td>상호</td>
-          <td colspan="3">
-            <input id="company-name" type="text" v-model="user.companyName" />
-          </td>
-        </tr>
-        <tr>
-          <td>주소</td>
-          <td colspan="3">
-            <input id="address" type="text" v-model="user.companyAddress" />
-          </td>
-        </tr>
-        <tr>
-          <td>업태</td>
-          <td>
-            <input id="business-type" type="text" v-model="user.businessType" />
-          </td>
-          <td>업종</td>
-          <td>
-            <input id="business-item" type="text" v-model="user.businessItem" />
-          </td>
-        </tr>
-        <tr>
-          <td>담당자</td>
-          <td><input id="name" type="text" v-model="user.userName" /></td>
-          <td>전화번호</td>
-          <td>
-            <input id="telephone" type="text" v-model="user.telephoneNum" />
-          </td>
-        </tr>
-        <tr>
-          <td>이메일</td>
-          <td colspan="3">
-            <input id="email" type="text" v-model="user.email" />
-            <!-- <input id="email" type="text" v-model="user.email[0]" />
-            <span>@</span>
-            <input id="email" type="text" v-model="user.email[1]" /> -->
-          </td>
-        </tr>
-      </table>
+  <form @change="sendData" @submit.prevent>
+    <div class="form-head">
+      <div>공급자</div>
+      <button @click="getUserInfo">불러오기</button>
     </div>
-  </div>
+    <div>
+      <input type="text" placeholder="상호명" v-model="user.companyName" />
+    </div>
+    <div>
+      <input type="text" placeholder="담당자 이름" v-model="user.userName" />
+    </div>
+    <div>
+      <input
+        type="text"
+        placeholder="사업자등록번호"
+        v-model="user.companyRegiNum"
+      />
+    </div>
+    <div>
+      <input type="text" placeholder="이메일" v-model="user.email" />
+    </div>
+
+    <div>
+      <input type="text" placeholder="전화번호" v-model="user.telephoneNum" />
+    </div>
+    <div>
+      <input type="text" placeholder="주소" v-model="user.companyAddress" />
+    </div>
+  </form>
 </template>
 <script>
 import { getUserInfo } from '@/api/user';
@@ -97,3 +73,33 @@ export default {
   },
 };
 </script>
+<style scoped>
+form {
+  width: 400px;
+  margin: 8px 0 8px 12px;
+  border-radius: 8px;
+  padding: 12px 20px 12px;
+  background: rgba(59, 65, 75, 0.836);
+  font-size: 14px;
+  border: 1px solid #b1b1b1;
+  /* font-weight: 500; */
+}
+.form-head {
+  display: flex;
+  justify-content: space-between;
+}
+input {
+  padding: 5px 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  height: 25px;
+}
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 2px;
+  text-align: left;
+}
+</style>

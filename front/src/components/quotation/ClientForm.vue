@@ -1,15 +1,11 @@
 <template>
   <form @submit.prevent @change="sendData">
-    <div>
+    <div class="form-head">
       <span>수신인</span>
       <button @click="sendClient">검색</button>
     </div>
     <div>
-      <input
-        placeholder="상호명(*필수)"
-        type="text"
-        v-model="client.companyName"
-      />
+      <input placeholder="상호명" type="text" v-model="client.companyName" />
     </div>
     <div>
       <input
@@ -79,3 +75,28 @@ export default {
   },
 };
 </script>
+<style scoped>
+form {
+  width: 400px;
+  margin: 8px 12px 8px 0;
+  border-radius: 8px;
+  padding: 12px 20px 12px;
+  background: rgba(59, 65, 75, 0.836);
+  font-size: 14px;
+  border: 1px solid #b1b1b1;
+  /* font-weight: 500; */
+}
+.form-head {
+  display: flex;
+  justify-content: space-between;
+}
+
+input {
+  padding: 5px 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  height: 25px;
+}
+</style>

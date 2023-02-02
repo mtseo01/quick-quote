@@ -1,24 +1,25 @@
 <template>
-  <h1>견적서</h1>
-  <div>
-    <label for="quote-num">No. </label>
-    <input id="quote-num" type="text" v-model="quoteNum" />
-  </div>
-  <div>
-    <label for="quote-date">견적일자 </label>
-    <input id="quote-date" type="date" v-model="quoteDate" />
-  </div>
-  <div>
-    <label for="quote-title">견적서 제목 </label>
-    <input id="quote-title" type="text" v-model="quoteTitle" />
-  </div>
-  <div class="client-user">
-    <ClientForm @client-data="putClient" />
-    <UserForm @user-data="putUser" />
-  </div>
+  <!-- <h1>견적서</h1> -->
+  <form class="quote" @submit.prevent>
+    <form class="quote-info-form">
+      <div class="quote-num-form">
+        <label for="quote-num">견적번호</label>
+        <input id="quote-num" type="text" v-model="quoteNumer" />
+      </div>
+      <div class="quote-date-form">
+        <label for="quote-date">견적일자</label>
+        <input id="quote-date" type="date" v-model="quoteDate" />
+      </div>
+    </form>
 
-  <ProductForm @product-data="putProduct" @note-data="putNote" />
-  <button @click="create">다음</button>
+    <section class="client-user">
+      <ClientForm @client-data="putClient" />
+      <UserForm @user-data="putUser" />
+    </section>
+
+    <ProductForm @product-data="putProduct" @note-data="putNote" />
+    <button @click="create">다음</button>
+  </form>
 </template>
 
 <script>
@@ -30,7 +31,7 @@ export default {
   components: { UserForm, ProductForm, ClientForm },
   data() {
     return {
-      quoteNum: 'AA-0001',
+      quoteNumer: 'AA-0001',
       quoteDate: '',
       quoteTitle: '',
       amount: '',
@@ -78,7 +79,7 @@ export default {
     },
     log() {
       const data = {
-        quoteNum: this.quoteNum,
+        quoteNumer: this.quoteNumer,
         quoteDate: this.quoteDate,
         quoteTitle: this.quoteTitle,
         user: this.user,
@@ -94,7 +95,7 @@ export default {
     },
     async create() {
       const data = {
-        quoteNum: this.quoteNum,
+        quoteNumer: this.quoteNumer,
         quoteDate: this.quoteDate,
         quoteTitle: this.quoteTitle,
         user: this.user,
@@ -116,5 +117,63 @@ export default {
 <style scoped>
 .client-user {
   display: flex;
+  justify-content: space-between;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+  font-weight: regular;
+  margin: 10px;
+}
+.quote {
+  border-radius: 8px;
+  padding: 12px 20px 12px;
+  font-size: 14px;
+  border: 1px solid #b1b1b1;
+  box-shadow: 0px 0px 5px #444;
+}
+.quote-info-form {
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+  border-radius: 8px;
+  padding: 12px 20px 12px;
+  margin: 8px 0 8px;
+  background: rgba(59, 65, 75, 0.836);
+  border: 1px solid #b1b1b1;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 2px;
+  text-align: left;
+}
+
+#quote-num,
+#quote-date {
+  padding: 5px 12px;
+  margin-top: 4px;
+  border: none;
+  border-radius: 4px;
+  width: 145px;
+  height: 25px;
+}
+
+button {
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: rgb(73, 154, 73);
+  display: block;
+  border: none;
+  width: 100%;
+  padding: 5px 12px;
+  margin: 8px 0 8px;
+  border-radius: 4px;
+}
+button:hover {
+  background-color: rgb(90, 172, 90);
 }
 </style>
