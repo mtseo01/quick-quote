@@ -9,19 +9,20 @@
     </div>
     <div>
       <label for="password">password</label>
-      <input id="password" required type="text" v-model="password" />
+      <input id="password" required type="password" v-model="password" />
     </div>
-    <button @click="login">로그인</button>
+    <base-button mode="large-comfirm" @click="login">로그인</base-button>
   </form>
 
   <div class="signup-form">
-    <span>아이디가 없으신가요?</span>
+    <span>회원가입이 필요하세요?</span>
     <router-link :to="{ name: 'signup' }">회원가입</router-link>
   </div>
 </template>
 <script>
 // import axios from 'axios';
 import { loginUser } from '@/api/user';
+
 export default {
   components: {},
   data() {
@@ -65,10 +66,12 @@ form {
   /* font-weight: 500; */
 }
 div .signup-form {
+  /* border: 0.8px solid #9aa2ab; */
   display: flex;
   justify-content: space-between;
   border-radius: 8px;
   padding: 20px 20px;
+  /* background: #12202f; */
   background: rgba(59, 65, 75, 0.836);
   font-size: 14px;
   margin-top: 20px;
@@ -99,22 +102,9 @@ label {
   padding: 5px 12px;
   margin-top: 4px;
   margin-bottom: 16px;
-  border: 1px solid;
+  border: none;
   border-radius: 4px;
   width: 280px;
   height: 25px;
-}
-button {
-  color: white;
-  background-color: rgb(73, 154, 73);
-  display: block;
-  border: none;
-  width: 100%;
-  padding: 5px 12px;
-  margin-top: 8px;
-  border-radius: 4px;
-}
-button:hover {
-  background-color: rgb(90, 172, 90);
 }
 </style>

@@ -16,7 +16,7 @@
         <th>세액</th>
         <th>합</th>
         <th>
-          <button class="add-button" @click="addProductList">추가</button>
+          <base-button @click="addProductList">추가</base-button>
         </th>
         <tr
           @change="sendProductData"
@@ -76,9 +76,9 @@
             />
           </td>
           <td>
-            <button class="head-delete" @click="deleteProductList(i)">
+            <base-button class="head-delete" @click="deleteProductList(i)">
               제거
-            </button>
+            </base-button>
           </td>
         </tr>
       </table>
@@ -94,6 +94,7 @@
 </template>
 <script>
 export default {
+  emits: ['product-data', 'note-data'],
   components: {},
   data() {
     return {
@@ -243,12 +244,6 @@ select {
 }
 .head-sub-price {
   width: 120px;
-  min-width: 35px;
-}
-.head-delete,
-.add-button {
-  font-size: 12px;
-  height: 25px;
   min-width: 35px;
 }
 

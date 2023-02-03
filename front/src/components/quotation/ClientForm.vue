@@ -2,7 +2,7 @@
   <form @submit.prevent @change="sendData">
     <div class="form-head">
       <span>수신인</span>
-      <button @click="sendClient">검색</button>
+      <base-button @click="sendClient">검색</base-button>
     </div>
     <div>
       <input placeholder="상호명" type="text" v-model="client.companyName" />
@@ -35,7 +35,8 @@
 <script>
 // import { getClinet } from '@/api/client';
 export default {
-  components: {},
+  emits: ['client-data'],
+
   data() {
     return {
       client: {

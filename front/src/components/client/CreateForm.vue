@@ -22,7 +22,9 @@
     </div>
     <div><input placeholder="주소" type="text" v-model="companyAddress" /></div>
 
-    <button type="submit" @click="submit">등록하기</button>
+    <base-button mode="large-comfirm" type="submit" @click="submit"
+      >등록하기</base-button
+    >
   </form>
 </template>
 <script>
@@ -88,20 +90,6 @@ input {
   border-radius: 4px;
   width: 280px;
   height: 25px;
-}
-
-button {
-  color: white;
-  background-color: rgb(73, 154, 73);
-  display: block;
-  border: none;
-  width: 100%;
-  padding: 5px 12px;
-  margin-top: 8px;
-  border-radius: 4px;
-}
-button:hover {
-  background-color: rgb(90, 172, 90);
 }
 
 div .alert-form {

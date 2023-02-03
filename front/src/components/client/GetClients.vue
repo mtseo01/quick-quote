@@ -15,8 +15,10 @@
               <p>{{ client.email }}</p>
             </div>
             <div>
-              <button @click="getClient(client._id)">수정</button>
-              <button @click="deleteBtn(client._id)">삭제</button>
+              <base-button @click="getClient(client._id)">수정</base-button>
+              <base-button mode="cancel" @click="deleteBtn(client._id)"
+                >삭제</base-button
+              >
             </div>
           </div>
         </td>

@@ -24,7 +24,7 @@
         v-model="confirmPassword"
       />
     </div>
-    <button @click="deleteOne()">탈퇴하기</button>
+    <base-button mode="large-cancel" @click="deleteOne()">탈퇴하기</base-button>
   </form>
 </template>
 <script>
@@ -103,18 +103,5 @@ input {
   width: 280px;
   height: 25px;
   border: none;
-}
-button {
-  color: white;
-  background-color: rgb(202, 10, 64);
-  display: block;
-  border: none;
-  width: 100%;
-  padding: 5px 12px;
-  margin-top: 8px;
-  border-radius: 4px;
-}
-button:hover {
-  background-color: rgb(219, 40, 91);
 }
 </style>

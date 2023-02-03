@@ -18,7 +18,7 @@
     </section>
 
     <ProductForm @product-data="putProduct" @note-data="putNote" />
-    <button @click="create">다음</button>
+    <base-button mode="large-comfirm" @click="create">다음</base-button>
   </form>
 </template>
 
@@ -159,21 +159,5 @@ label {
   border-radius: 4px;
   width: 145px;
   height: 25px;
-}
-
-button {
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
-  background-color: rgb(73, 154, 73);
-  display: block;
-  border: none;
-  width: 100%;
-  padding: 5px 12px;
-  margin: 8px 0 8px;
-  border-radius: 4px;
-}
-button:hover {
-  background-color: rgb(90, 172, 90);
 }
 </style>

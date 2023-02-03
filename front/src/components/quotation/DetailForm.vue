@@ -1,5 +1,5 @@
 <template>
-  <div><button @click="makePdf">make pdf</button></div>
+  <div><base-button @click="makePdf">make pdf</base-button></div>
 </template>
 <script>
 import jsPDF from 'jspdf';

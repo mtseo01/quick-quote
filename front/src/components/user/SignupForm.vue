@@ -43,7 +43,7 @@
           <input id="businessItem" type="text" v-model="businessItem" />
         </div>
       </div>
-      <button @click="signup">회원가입</button>
+      <base-button mode="large-comfirm" @click="signup">회원가입</base-button>
     </form>
     <div class="login-form">
       <span>이미 회원이신가요?</span>
@@ -127,20 +127,9 @@ label {
   border-radius: 4px;
   width: 280px;
   height: 25px;
-}
-button {
-  color: white;
-  background-color: rgb(73, 154, 73);
-  display: block;
   border: none;
-  width: 100%;
-  padding: 5px 12px;
-  margin-top: 8px;
-  border-radius: 4px;
 }
-button:hover {
-  background-color: rgb(90, 172, 90);
-}
+
 p {
   color: rgb(0, 97, 252);
   cursor: pointer;

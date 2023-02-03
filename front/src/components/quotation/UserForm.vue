@@ -2,7 +2,7 @@
   <form @change="sendData" @submit.prevent>
     <div class="form-head">
       <div>공급자</div>
-      <button @click="getUserInfo">불러오기</button>
+      <base-button @click="getUserInfo">불러오기</base-button>
     </div>
     <div>
       <input type="text" placeholder="상호명" v-model="user.companyName" />
@@ -32,6 +32,7 @@
 <script>
 import { getUserInfo } from '@/api/user';
 export default {
+  emits: ['user-data'],
   components: {},
   data() {
     return {
