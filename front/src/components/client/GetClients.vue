@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div class="alert-form">{{ logMessage }}</div>
-
+    <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
+      <p>{{ alertMessage }}</p>
+    </alert-block>
     <table>
       <tr class="head">
         <th class="head-company">Company List</th>
@@ -33,7 +34,9 @@ export default {
   data() {
     return {
       clients: [],
-      logMessage: '',
+      alertMessage: '',
+      alert: false,
+      alertMode: null,
     };
   },
   setup() {},
@@ -47,11 +50,15 @@ export default {
       try {
         const { data } = await getClientAll();
         this.clients = data.docs;
-        this.logMessage = data.message;
+        this.alertMessage = data.message;
+        this.alertMode = 'success';
+        this.alert = true;
         console.log(data);
       } catch (error) {
         console.log(error.response.data.message);
-        this.logMessage = error.response.data.message;
+        this.alertMessage = error.response.data.message;
+        this.alertMode = 'error';
+        this.alert = true;
       }
     },
     getClient(clientId) {
@@ -67,22 +74,20 @@ export default {
         }
       } catch (error) {
         console.log(error);
+        this.alertMessage = '삭제를 실패하였습니다.';
+        this.alertMode = 'error';
+        this.alert = true;
       }
+    },
+    closeAlert() {
+      this.alert = false;
+      this.alertMessage = '';
+      this.alertMode = null;
     },
   },
 };
 </script>
 <style scoped>
-div .alert-form {
-  color: rgb(0, 97, 252);
-  border-radius: 8px;
-  padding: 20px 20px;
-  background: rgba(59, 65, 75, 0.836);
-  font-size: 14px;
-  margin-bottom: 8px;
-  transition: 0.3s;
-}
-
 table {
   width: 320px;
   padding: 20px 20px;

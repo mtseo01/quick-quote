@@ -1,7 +1,7 @@
 <template>
-  <div v-if="alert" class="alert-form">
-    {{ logMessage }}
-  </div>
+  <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
+    <p>{{ alertMessage }}</p>
+  </alert-block>
   <form @submit.prevent>
     <div>
       <input placeholder="상호명(*필수)" type="text" v-model="companyName" />
@@ -41,8 +41,9 @@ export default {
       telephoneNum: '',
       companyAddress: '',
       // 로그메세지
-      logMessage: '',
+      alertMessage: '',
       alert: false,
+      alertMode: null,
     };
   },
   setup() {},
@@ -63,13 +64,20 @@ export default {
         const { data } = await registerClient(clientObj);
 
         console.log(data);
-        this.logMessage = data.message;
+        this.alertMessage = data.message;
+        this.alertMode = 'success';
         this.alert = true;
       } catch (error) {
         console.log(error.response.data.message);
-        this.logMessage = error.response.data.message;
+        this.alertMessage = error.response.data.message;
+        this.alertMode = 'error';
         this.alert = true;
       }
+    },
+    closeAlert() {
+      this.alert = false;
+      this.alertMessage = '';
+      this.alertMode = null;
     },
   },
 };
@@ -90,15 +98,5 @@ input {
   border-radius: 4px;
   width: 280px;
   height: 25px;
-}
-
-div .alert-form {
-  color: rgb(0, 97, 252);
-  border-radius: 8px;
-  padding: 20px 20px;
-  background: rgba(59, 65, 75, 0.836);
-  font-size: 14px;
-  margin-bottom: 8px;
-  transition: 0.3s;
 }
 </style>

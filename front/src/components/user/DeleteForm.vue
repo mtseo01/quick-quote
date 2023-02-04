@@ -1,7 +1,7 @@
 <template>
-  <div v-if="alert" class="alert-form">
-    {{ logMessage }}
-  </div>
+  <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
+    <p>{{ alertMessage }}</p>
+  </alert-block>
   <form @submit.prevent>
     <div>
       <label for="password">password</label>
@@ -36,8 +36,9 @@ export default {
     return {
       password: '',
       confirmPassword: '',
-      logMessage: '',
+      alertMessage: '',
       alert: false,
+      alertMode: null,
     };
   },
   setup() {},
@@ -53,33 +54,29 @@ export default {
             password: this.password,
           };
           const res = await deleteUser(userId, password);
-          this.logMessage = res.data.message;
+          this.alertMode = 'success';
           this.alert = true;
-          console.log(res);
+          this.alertMessage = res.data.message;
         } catch (error) {
-          console.log(error);
-          this.logMessage = error.response.data.message;
           this.alert = true;
+          this.alertMode = 'error';
+          this.alertMessage = error.response.data.message;
         }
       } else {
-        this.logMessage = '비밀번호가 틀렸습니다.';
         this.alert = true;
+        this.alertMode = 'error';
+        this.alertMessage = '비밀번호가 틀렸습니다.';
       }
+    },
+    closeAlert() {
+      this.alert = false;
+      this.alertMessage = '';
+      this.alertMode = null;
     },
   },
 };
 </script>
 <style scoped>
-div .alert-form {
-  color: rgb(251, 39, 39);
-  border-radius: 8px;
-  padding: 20px 20px;
-  background: rgba(59, 65, 75, 0.836);
-  font-size: 14px;
-  margin-bottom: 8px;
-  transition: 0.3s;
-}
-
 form {
   width: 320px;
   padding: 20px 20px;

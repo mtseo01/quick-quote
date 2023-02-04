@@ -1,7 +1,7 @@
 <template>
-  <div v-if="alert" class="alert-form">
-    {{ logMessage }}
-  </div>
+  <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
+    <p>{{ alertMessage }}</p>
+  </alert-block>
   <form @submit.prevent="update(user.userId)">
     <div>
       <input placeholder="상호명" type="text" v-model="user.companyName" />
@@ -51,8 +51,9 @@ export default {
         businessType: '', // 업종
         businessItem: '', // 업태
       },
-      logMessage: '',
+      alertMessage: '',
       alert: false,
+      alertMode: null,
     };
   },
   setup() {},
@@ -66,7 +67,7 @@ export default {
       try {
         const { data } = await getUserInfo();
         this.user = data.user;
-        this.logMessage = data.message;
+        this.alertMessage = data.message;
         this.alert = true;
       } catch (error) {
         console.log(error.response.data.message);
@@ -86,10 +87,19 @@ export default {
         };
         const { data } = await updateUser(userId, userObj);
         this.alert = true;
-        this.logMessage = data.message;
+        this.alertMode = 'success';
+        this.alertMessage = data.message;
       } catch (error) {
         console.log(error.response.data);
+        this.alert = true;
+        this.alertMode = 'error';
+        this.alertMessage = error.response.data.message;
       }
+    },
+    closeAlert() {
+      this.alert = false;
+      this.alertMessage = '';
+      this.alertMode = null;
     },
   },
 };
@@ -110,15 +120,5 @@ input {
   border-radius: 4px;
   width: 280px;
   height: 25px;
-}
-
-div .alert-form {
-  color: rgb(0, 97, 252);
-  border-radius: 8px;
-  padding: 20px 20px;
-  background: rgba(59, 65, 75, 0.836);
-  font-size: 14px;
-  margin-bottom: 8px;
-  transition: 0.3s;
 }
 </style>

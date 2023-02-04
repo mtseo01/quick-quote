@@ -1,15 +1,15 @@
 <template>
-  <div v-if="alert" class="alert-form">
-    {{ logMessage }}
-  </div>
+  <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
+    <p>{{ alertMessage }}</p>
+  </alert-block>
   <form class="login-form" @submit.prevent>
     <div class="email-form">
       <label for="email">email</label>
-      <input id="email" autofocus required type="text" v-model="email" />
+      <input id="email" autofocus type="text" v-model="email" />
     </div>
     <div>
       <label for="password">password</label>
-      <input id="password" required type="password" v-model="password" />
+      <input id="password" type="password" v-model="password" />
     </div>
     <base-button mode="large-comfirm" @click="login">로그인</base-button>
   </form>
@@ -29,8 +29,9 @@ export default {
     return {
       email: '',
       password: '',
-      logMessage: '',
+      alertMessage: '',
       alert: false,
+      alertMode: null,
     };
   },
   setup() {},
@@ -39,20 +40,36 @@ export default {
   unmounted() {},
   methods: {
     async login() {
-      try {
-        const userObj = {
-          email: this.email,
-          password: this.password,
-        };
-        const response = await loginUser(userObj);
-        console.log(response.data);
-        this.logMessage = response.data.message;
-        this.$router.push({ name: 'main' });
-      } catch (error) {
-        console.log(error.response.data.message);
-        this.logMessage = error.response.data.message;
+      if (this.email.trim() === '') {
         this.alert = true;
+        this.alertMode = 'warning';
+        this.alertMessage = '이메일을 입력해주세요.';
+      } else if (this.password.trim() === '') {
+        this.alert = true;
+        this.alertMode = 'warning';
+        this.alertMessage = '비밀번호를 입력해주세요.';
+      } else {
+        try {
+          const userObj = {
+            email: this.email,
+            password: this.password,
+          };
+          const response = await loginUser(userObj);
+          console.log(response.data);
+          this.alertMessage = response.data.message;
+          this.$router.push({ name: 'main' });
+        } catch (error) {
+          console.log(error.response.data.message);
+          this.alertMessage = error.response.data.message;
+          this.alertMode = 'error';
+          this.alert = true;
+        }
       }
+    },
+    closeAlert() {
+      this.alert = false;
+      this.alertMessage = '';
+      this.alertMode = null;
     },
   },
 };
@@ -83,15 +100,7 @@ div .signup-form a {
 div .signup-form a:hover {
   color: rgb(34, 116, 247);
 }
-div .alert-form {
-  color: rgb(251, 39, 39);
-  border-radius: 8px;
-  padding: 20px 20px;
-  background: rgba(59, 65, 75, 0.836);
-  font-size: 14px;
-  margin-bottom: 8px;
-  transition: 0.3s;
-}
+
 label {
   display: block;
   font-size: 14px;

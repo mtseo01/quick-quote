@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-if="alert" class="alert-form">
-      {{ logMessage }}
-    </div>
+    <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
+      {{ alertMessage }}
+    </alert-block>
     <form class="signup-form" @submit.prevent>
       <div>
         <label for="email">email</label>
@@ -10,7 +10,7 @@
       </div>
       <div>
         <label for="password">password</label>
-        <input id="password" type="text" v-model="password" />
+        <input id="password" type="password" v-model="password" />
       </div>
       <div>
         <label for="userName">담당자 이름</label>
@@ -54,6 +54,7 @@
 <script>
 // import axios from 'axios';
 import { registerUser } from '@/api/user';
+
 export default {
   components: {},
   data() {
@@ -67,8 +68,9 @@ export default {
       companyAddress: '',
       businessType: '',
       businessItem: '',
-      logMessage: '',
+      alertMessage: '',
       alert: false,
+      alertMode: null,
       addInfo: false,
     };
   },
@@ -94,12 +96,18 @@ export default {
         console.log(response.data);
         this.$router.push({ name: 'main' });
       } catch (error) {
-        this.logMessage = error.response.data.message;
+        this.alertMessage = error.response.data.message;
         this.alert = true;
+        this.alertMode = 'error';
       }
     },
     add() {
       this.addInfo = !this.addInfo;
+    },
+    closeAlert() {
+      this.alert = false;
+      this.alertMessage = '';
+      this.alertMode = null;
     },
   },
 };
@@ -153,14 +161,5 @@ div .login-form a {
 }
 div .login-form a:hover {
   color: rgb(34, 116, 247);
-}
-div .alert-form {
-  color: rgb(251, 39, 39);
-  border-radius: 8px;
-  padding: 20px 20px;
-  background: rgba(59, 65, 75, 0.836);
-  font-size: 14px;
-  margin-bottom: 8px;
-  transition: 0.3s;
 }
 </style>

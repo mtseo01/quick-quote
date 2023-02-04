@@ -1,7 +1,8 @@
 <template>
-  <div v-if="alert" class="alert-form">
-    {{ logMessage }}
-  </div>
+  <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
+    {{ alertMessage }}
+  </alert-block>
+
   <form @submit.prevent>
     <div>
       <label for="password">password</label>
@@ -48,8 +49,9 @@ export default {
       password: '',
       newPassword: '',
       confirmNewPassword: '',
+      alertMessage: '',
       alert: false,
-      logMessage: '',
+      alertMode: null,
     };
   },
   setup() {},
@@ -68,31 +70,29 @@ export default {
           const res = await updatePassword(userId, userObj);
           console.log(res);
           this.alert = true;
-          this.logMessage = res.data.message;
+          this.alertMode = 'success';
+          this.alertMessage = res.data.message;
         } catch (error) {
           console.log(error);
           this.alert = true;
-          this.logMessage = error.response.data.message;
+          this.alertMode = 'error';
+          this.alertMessage = error.response.data.message;
         }
       } else {
         this.alert = true;
-        this.logMessage = '비밀번호가 틀렸습니다';
+        this.alertMode = 'error';
+        this.alertMessage = '비밀번호가 틀렸습니다';
       }
+    },
+    closeAlert() {
+      this.alert = false;
+      this.alertMessage = '';
+      this.alertMode = null;
     },
   },
 };
 </script>
 <style scoped>
-div .alert-form {
-  color: rgb(251, 39, 39);
-  border-radius: 8px;
-  padding: 20px 20px;
-  background: rgba(59, 65, 75, 0.836);
-  font-size: 14px;
-  margin-bottom: 8px;
-  transition: 0.3s;
-}
-
 form {
   width: 320px;
   padding: 20px 20px;
