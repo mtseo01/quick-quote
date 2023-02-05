@@ -1,8 +1,24 @@
 <template>
+  <base-modal v-if="modal" title="거래처 목록" @close="modal = false">
+    <template #default>
+      <div v-if="clients.length === 0"><p>거래처가 없습니다.</p></div>
+      <div
+        class="select-client"
+        v-for="(client, index) in clients"
+        :key="client._id"
+      >
+        <h4 @click="selectClient(index)">{{ client.companyName }}</h4>
+        <div class="content-company-info">
+          <p>{{ client.clientName }}</p>
+          <p>{{ client.email }}</p>
+        </div>
+      </div>
+    </template>
+  </base-modal>
   <form @submit.prevent @change="sendData">
     <div class="form-head">
       <span>수신인</span>
-      <base-button @click="sendClient">검색</base-button>
+      <base-button @click="getClients">검색</base-button>
     </div>
     <div>
       <input placeholder="상호명" type="text" v-model="client.companyName" />
@@ -33,7 +49,7 @@
   </form>
 </template>
 <script>
-// import { getClinet } from '@/api/client';
+import { getClientAll } from '@/api/client';
 export default {
   emits: ['client-data'],
 
@@ -48,8 +64,8 @@ export default {
         companyAddress: '',
         _id: '',
       },
-
-      // logMessage: '',
+      modal: false,
+      clients: [],
     };
   },
   computed: {},
@@ -63,16 +79,21 @@ export default {
     sendData() {
       return this.$emit('client-data', this.client);
     },
-    // async fetch() {
-    //   try {
-    //     const clientId = this.$route.params.id;
-    //     const { data } = await getClinet(clientId);
-    //     this.client = data.doc;
-    //     this.logMessage = data.message;
-    //   } catch (error) {
-    //     this.logMessage = error.response.data.message;
-    //   }
-    // },
+    async getClients() {
+      this.modal = true;
+      try {
+        const { data } = await getClientAll();
+        this.clients = data.docs;
+
+        console.log(data);
+      } catch (error) {
+        console.log(error.response.data.message);
+      }
+    },
+    selectClient(index) {
+      this.client = this.clients[index];
+      this.modal = false;
+    },
   },
 };
 </script>
@@ -99,5 +120,10 @@ input {
   border-radius: 4px;
   width: 100%;
   height: 25px;
+}
+
+.select-client {
+  cursor: pointer;
+  margin-bottom: 8px;
 }
 </style>
