@@ -1,13 +1,18 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
-const NOW = moment().format('YYYY-MM-DD HH:mm:ss');
-const TODAY = moment().format('YYYY-MM-DD');
 
 // _id, user, client, productList, etc(비고), createdAt, creater
 const quotationSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  createdAt: { type: String, default: NOW, immutable: true }, // 최초 날짜에서 변경 불가
-  updatedAt: { type: String, default: NOW },
+  createdAt: {
+    type: String,
+    default: () => moment().format('YYYY-MM-DD HH:mm:ss'),
+    immutable: true,
+  }, // 최초 날짜에서 변경 불가
+  updatedAt: {
+    type: String,
+    default: () => moment().format('YYYY-MM-DD HH:mm:ss'),
+  },
   creater: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -15,7 +20,7 @@ const quotationSchema = mongoose.Schema({
   },
   quoteTitle: { type: String }, // 추가
   quoteNumber: { type: String },
-  quoteDate: { type: String, default: TODAY },
+  quoteDate: { type: String },
   user: {
     userName: { type: String },
     companyName: { type: String },

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Quotation = require('../models/quotation');
+let moment = require('moment');
+
 const User = require('../models/user');
 
 exports.createQuotation = (req, res) => {
@@ -107,7 +109,11 @@ exports.getQuotation = (req, res) => {
 
 exports.updateQuotation = (req, res) => {
   let quotationId = req.params.id;
-  Quotation.findByIdAndUpdate(quotationId, { $set: req.body }, { new: true })
+  Quotation.findByIdAndUpdate(
+    quotationId,
+    { $set: req.body, updatedAt: moment().format('YYYY-MM-DD HH:mm:ss') },
+    { new: true },
+  )
     .then(result => {
       return res.status(200).json({
         success: true,
