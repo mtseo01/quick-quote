@@ -2,7 +2,7 @@
   <div>
     <div class="amount-area">
       <h3>총 견적 금액</h3>
-      <h3 id="amount">₩ {{ amount }}</h3>
+      <h3 id="amount">₩ {{ amount.toLocaleString('ko-KR') }}</h3>
     </div>
     <!-- 테이블 -->
     <div class="container-table">
