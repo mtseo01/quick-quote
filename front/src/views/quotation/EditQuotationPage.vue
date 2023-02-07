@@ -29,7 +29,23 @@
       :amountData="amount"
       :noteData="note"
     />
-    <base-button mode="large" @click="update">수정하기</base-button>
+    <base-modal v-if="modal" title="견적서 제목" @close="modal = false">
+      <template #default>
+        <input
+          class="input-title"
+          type="text"
+          placeholder="견적서 제목을 입력해주세요."
+          v-model="quoteTitle"
+        />
+      </template>
+      <template #button>
+        <base-button mode="large" @click="update">확인</base-button>
+        <base-button mode="large-cancel" @click="modal = false"
+          >취소</base-button
+        >
+      </template>
+    </base-modal>
+    <base-button mode="large" @click="modal = true">수정하기</base-button>
     <base-button mode="large-comfirm"> 생성하기 </base-button>
   </form>
 </template>
@@ -70,6 +86,7 @@ export default {
       productList: [],
       note: '',
       getQuotationData: false,
+      modal: false,
     };
   },
   setup() {},
@@ -98,6 +115,7 @@ export default {
         const res = await getQuotation(id);
         this.quoteNumber = res.data.doc.quoteNumber;
         this.quoteDate = res.data.doc.quoteDate;
+        this.quoteTitle = res.data.doc.quoteTitle;
         this.user = res.data.doc.user;
 
         this.client = res.data.doc.client;
@@ -114,6 +132,7 @@ export default {
       // 로그인 여부에 확인 후 타이틀 입력하기
       const id = this.$route.params.id;
       const data = {
+        quoteTitle: this.quoteTitle,
         quoteNumber: this.quoteNumber,
         quoteDate: this.quoteDate,
         user: this.user,
@@ -124,6 +143,8 @@ export default {
       };
       try {
         const res = await updateQuotation(id, data);
+        this.modal = false;
+        this.$router.push('/quotations/list');
         console.log(res);
 
         // res.data.doc.
@@ -169,6 +190,15 @@ label {
   font-size: 14px;
   margin-bottom: 2px;
   text-align: left;
+}
+.input-title {
+  text-align: center;
+  padding: 5px 12px;
+  margin-top: 30px;
+  border: 1px solid #b1b1b1;
+  border-radius: 4px;
+  width: 280px;
+  height: 25px;
 }
 
 #quote-num,

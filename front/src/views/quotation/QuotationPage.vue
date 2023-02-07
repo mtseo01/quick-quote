@@ -4,7 +4,7 @@
     <form class="quote-info-form">
       <div class="quote-num-form">
         <label for="quote-num">견적번호</label>
-        <input id="quote-num" type="text" v-model="quoteNumer" />
+        <input id="quote-num" type="text" v-model="quoteNumber" />
       </div>
       <div class="quote-date-form">
         <label for="quote-date">견적일자</label>
@@ -18,7 +18,24 @@
     </section>
 
     <ProductForm @product-data="putProduct" @note-data="putNote" />
-    <base-button mode="large-comfirm" @click="create">다음</base-button>
+    <base-modal v-if="modal" title="견적서 제목" @close="modal = false">
+      <template #default>
+        <input
+          class="input-title"
+          type="text"
+          placeholder="견적서 제목을 입력해주세요."
+          v-model="quoteTitle"
+        />
+      </template>
+      <template #button>
+        <base-button mode="large" @click="saveQuotation">확인</base-button>
+        <base-button mode="large-cancel" @click="modal = false"
+          >취소</base-button
+        >
+      </template>
+    </base-modal>
+    <base-button mode="large" @click="modal = true">저장하기</base-button>
+    <base-button mode="large-comfirm"> 생성하기 </base-button>
   </form>
 </template>
 
@@ -27,11 +44,12 @@ import { createQuotation } from '@/api/quotation';
 import ClientForm from '@/components/quotation/ClientForm.vue';
 import UserForm from '@/components/quotation/UserForm.vue';
 import ProductForm from '@/components/quotation/ProductForm.vue';
+import BaseModal from '@/components/UI/BaseModal.vue';
 export default {
-  components: { UserForm, ProductForm, ClientForm },
+  components: { UserForm, ProductForm, ClientForm, BaseModal },
   data() {
     return {
-      quoteNumer: 'AA-0001',
+      quoteNumber: 'AA-0001',
       quoteDate: '',
       quoteTitle: '',
       amount: '',
@@ -57,6 +75,7 @@ export default {
       },
       productList: [],
       note: '',
+      modal: false,
     };
   },
   setup() {},
@@ -77,25 +96,14 @@ export default {
     putNote(data) {
       this.note = data;
     },
-    log() {
-      const data = {
-        quoteNumer: this.quoteNumer,
-        quoteDate: this.quoteDate,
-        quoteTitle: this.quoteTitle,
-        user: this.user,
-        client: this.client,
-        products: this.productList,
-        note: this.note,
-        amount: this.amount,
-      };
-      console.log(data);
-    },
+
     putName(data) {
       console.log(data);
     },
-    async create() {
+    async saveQuotation() {
+      // 로그인 여부에 확인 후 타이틀 입력하기
       const data = {
-        quoteNumer: this.quoteNumer,
+        quoteNumber: this.quoteNumber,
         quoteDate: this.quoteDate,
         quoteTitle: this.quoteTitle,
         user: this.user,
@@ -149,6 +157,15 @@ label {
   font-size: 14px;
   margin-bottom: 2px;
   text-align: left;
+}
+.input-title {
+  text-align: center;
+  padding: 5px 12px;
+  margin-top: 30px;
+  border: 1px solid #b1b1b1;
+  border-radius: 4px;
+  width: 280px;
+  height: 25px;
 }
 
 #quote-num,
