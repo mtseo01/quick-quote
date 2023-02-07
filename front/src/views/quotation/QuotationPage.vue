@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { createQuotation } from '@/api/quotation';
+import { createQuotation, updateQuotation } from '@/api/quotation';
 import ClientForm from '@/components/quotation/ClientForm.vue';
 import UserForm from '@/components/quotation/UserForm.vue';
 import ProductForm from '@/components/quotation/ProductForm.vue';
@@ -76,6 +76,7 @@ export default {
       productList: [],
       note: '',
       modal: false,
+      quoteId: null,
     };
   },
   setup() {},
@@ -112,11 +113,21 @@ export default {
         note: this.note,
         amount: this.amount,
       };
-      try {
-        const res = await createQuotation(data);
-        console.log(res);
-      } catch (error) {
-        console.log(error);
+      if (this.quoteId === null) {
+        try {
+          const res = await createQuotation(data);
+          console.log(res);
+          this.quoteId = res.data.result._id;
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          const res = await updateQuotation(this.quoteId, data);
+          console.log(res);
+        } catch (error) {
+          console.log(error);
+        }
       }
     },
   },
