@@ -46,7 +46,7 @@
       </template>
     </base-modal>
     <base-button mode="large" @click="modal = true">수정하기</base-button>
-    <base-button mode="large-comfirm"> 생성하기 </base-button>
+    <base-button mode="large-comfirm" @click="create"> 생성하기 </base-button>
   </form>
 </template>
 
@@ -55,6 +55,7 @@ import { getQuotation, updateQuotation } from '@/api/quotation';
 import EditClientForm from '@/components/quotation/EditClientForm.vue';
 import EditUserForm from '@/components/quotation/EditUserForm.vue';
 import EditProductForm from '@/components/quotation/EditProductForm.vue';
+import { makePdf } from '@/utils/pdf';
 export default {
   components: { EditUserForm, EditProductForm, EditClientForm },
   data() {
@@ -151,6 +152,29 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    create() {
+      let quoteObj = {
+        quoteNumber: this.quoteNumber,
+        quoteDate: this.quoteDate,
+        amount: this.amount,
+        note: this.note,
+      };
+      let userObj = this.user;
+      let clientObj = this.client;
+      let productArr = [];
+      this.productList.forEach(e => {
+        productArr.push([
+          e.name,
+          e.quantity.toLocaleString('ko-KR'),
+          e.unitPrice.toLocaleString('ko-KR'),
+          e.rate,
+          e.price.toLocaleString('ko-KR'),
+          e.tax.toLocaleString('ko-KR'),
+          e.subTotal.toLocaleString('ko-KR'),
+        ]);
+      });
+      makePdf(quoteObj, userObj, clientObj, productArr);
     },
   },
 };

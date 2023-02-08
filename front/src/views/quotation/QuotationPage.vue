@@ -35,7 +35,7 @@
       </template>
     </base-modal>
     <base-button mode="large" @click="modal = true">저장하기</base-button>
-    <base-button mode="large-comfirm"> 생성하기 </base-button>
+    <base-button mode="large-comfirm" @click="create"> 생성하기 </base-button>
   </form>
 </template>
 
@@ -45,6 +45,7 @@ import ClientForm from '@/components/quotation/ClientForm.vue';
 import UserForm from '@/components/quotation/UserForm.vue';
 import ProductForm from '@/components/quotation/ProductForm.vue';
 import BaseModal from '@/components/UI/BaseModal.vue';
+import { makePdf } from '@/utils/pdf';
 export default {
   components: { UserForm, ProductForm, ClientForm, BaseModal },
   data() {
@@ -129,6 +130,29 @@ export default {
           console.log(error);
         }
       }
+    },
+    create() {
+      let quoteObj = {
+        quoteNumber: this.quoteNumber,
+        quoteDate: this.quoteDate,
+        amount: this.amount,
+        note: this.note,
+      };
+      let userObj = this.user;
+      let clientObj = this.client;
+      let productArr = [];
+      this.productList.forEach(e => {
+        productArr.push([
+          e.name,
+          e.quantity.toLocaleString('ko-KR'),
+          e.unitPrice.toLocaleString('ko-KR'),
+          e.rate,
+          e.price.toLocaleString('ko-KR'),
+          e.tax.toLocaleString('ko-KR'),
+          e.subTotal.toLocaleString('ko-KR'),
+        ]);
+      });
+      makePdf(quoteObj, userObj, clientObj, productArr);
     },
   },
 };
