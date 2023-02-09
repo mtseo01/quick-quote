@@ -1,21 +1,24 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { _fonts } from '@/utils/font';
-import { formatter } from '@/utils/formatter';
+import { font_normal, font_bold } from './font.js';
+import { formatter } from './formatter';
 
 function makePdf(quoteObj, userObj, clientObj, productsArr) {
   // pdf 옵션
   let doc = new jsPDF('p', 'mm', 'a4');
 
   // 폰트 설정
-  doc.addFileToVFS('malgun.ttf', _fonts);
-  doc.addFont('malgun.ttf', 'malgun', 'normal');
-  doc.setFont('malgun');
+  doc.addFileToVFS('font_normal.ttf', font_normal);
+  doc.addFileToVFS('font_bold.ttf', font_bold);
+  doc.addFont('font_bold.ttf', 'font_bold', 'normal');
+  doc.addFont('font_normal.ttf', 'font_normal', 'normal');
 
   // 견적 상단
   doc.setFontSize(30);
   console.log(doc.getFontList());
+  doc.setFont('font_bold');
   doc.text('견 적 서', 105, 25, 'center');
+  doc.setFont('font_normal');
   doc.setLineWidth(2);
   doc.line(15, 31, 195, 31);
 
@@ -23,8 +26,9 @@ function makePdf(quoteObj, userObj, clientObj, productsArr) {
   doc.setFontSize(12);
   doc.text(15, 50, `${clientObj.companyName}`);
   doc.setFontSize(14);
+  doc.setFont('font_bold');
   doc.text(15, 60, `${clientObj.clientName}   귀하`);
-
+  doc.setFont('font_normal');
   doc.setLineWidth(0.3);
   doc.line(15, 63, 80, 63);
 
@@ -38,7 +42,7 @@ function makePdf(quoteObj, userObj, clientObj, productsArr) {
   // 공급자
   doc.setFontSize(11);
   autoTable(doc, {
-    styles: { font: 'malgun', fontStyle: 'normal' },
+    styles: { font: 'font_normal', fontStyle: 'normal' },
     margin: { top: 0, bottom: 0, left: 102, right: 0 },
     theme: 'plain',
     startY: 45,
@@ -72,14 +76,16 @@ function makePdf(quoteObj, userObj, clientObj, productsArr) {
   });
 
   // 견적 총 금액
+  doc.setFont('font_bold');
   doc.setFontSize(18);
   doc.text(15, 117, `총 견적 금액 :  ${formatter.format(quoteObj.amount)}`);
 
   // 견적 테이블
+  doc.setFont('font_normal');
   doc.setFontSize(10);
   autoTable(doc, {
     styles: {
-      font: 'malgun',
+      font: 'font_normal',
       fontStyle: 'normal',
     },
 
