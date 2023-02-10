@@ -102,12 +102,12 @@ export default {
       productList: [
         {
           name: '',
-          quantity: 1,
-          unitPrice: 1,
-          price: 1,
+          quantity: '',
+          unitPrice: '',
+          price: '',
           rate: '',
-          tax: 0,
-          subTotal: 0,
+          tax: '',
+          subTotal: '',
         },
       ],
       note: '',
@@ -118,11 +118,11 @@ export default {
     addProductList() {
       this.productList.push({
         name: '',
-        quantity: 1,
-        unitPrice: 1,
-        price: 1,
-        tax: 0,
-        subTotal: 1,
+        quantity: '',
+        unitPrice: '',
+        price: '',
+        tax: '',
+        subTotal: '',
       });
     },
 

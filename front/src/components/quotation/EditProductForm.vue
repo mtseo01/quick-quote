@@ -109,11 +109,11 @@ export default {
     addProductList() {
       this.productList.push({
         name: '',
-        quantity: 1,
-        unitPrice: 1,
-        price: 1,
-        tax: 0,
-        subTotal: 1,
+        quantity: '',
+        unitPrice: '',
+        price: '',
+        tax: '',
+        subTotal: '',
       });
     },
 
