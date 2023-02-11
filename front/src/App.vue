@@ -1,73 +1,57 @@
 <template>
   <div class="app">
     <!-- header -->
-    <AppHeader></AppHeader>
-    <div class="test">
+    <TheHeader></TheHeader>
+    <div class="app-contents-wrap">
       <div class="app-contents">
         <router-view />
       </div>
     </div>
-
-    <!-- footer -->
-    <div><AppFooter></AppFooter></div>
   </div>
 </template>
 
 <script>
-import AppHeader from '@/components/common/AppHeader.vue';
-import AppFooter from '@/components/common/AppFooter.vue';
+import TheHeader from '@/components/layout/TheHeader.vue';
 export default {
-  components: { AppHeader, AppFooter },
+  components: { TheHeader },
   data() {
-    return {
-      sampleData: '',
-    };
+    return {};
   },
   setup() {},
-  created() {},
+  created() {
+    this.setToken();
+  },
   mounted() {},
   unmounted() {},
-  methods: {},
+  methods: {
+    setToken() {
+      this.$store.commit('setToken');
+    },
+  },
 };
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;700&display=swap');
 * {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  /* display: flex; */
-}
-
-/* .test {
+.app-contents-wrap {
   display: flex;
   justify-content: center;
-} */
-/* 
+  /* width: 70%; */
+
+  min-height: 100vh;
+  background-color: #12202f;
+}
 .app-contents {
-  display: flex;
-  justify-content: center;
-  width: 70%;
-  height: 100vh;
-  background-color: darkolivegreen;
-} */
+  margin: 10px auto;
 
-/* nav {
-  padding: 30px;
+  /* background: blue; */
+  color: #fff;
 }
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-} */
 </style>
