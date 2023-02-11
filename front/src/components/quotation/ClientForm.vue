@@ -52,7 +52,6 @@
 import { getClientAll } from '@/api/client';
 export default {
   emits: ['client-data'],
-
   data() {
     return {
       client: {
@@ -84,7 +83,6 @@ export default {
       try {
         const { data } = await getClientAll();
         this.clients = data.docs;
-
         console.log(data);
       } catch (error) {
         console.log(error.response.data.message);
@@ -92,6 +90,7 @@ export default {
     },
     selectClient(index) {
       this.client = this.clients[index];
+      this.sendData();
       this.modal = false;
     },
   },
