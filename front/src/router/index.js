@@ -27,7 +27,7 @@ const routes = [
   {
     path: '/users/:id',
     name: 'edit-user',
-    component: () => import('@/views/user/EditUser.vue'),
+    component: () => import('@/views/user/EditUserPage.vue'),
     meta: { requireAuth: true },
   },
   {
@@ -77,11 +77,6 @@ const routes = [
     component: () => import('@/views/client/EditClient.vue'),
     meta: { requireAuth: true },
   },
-  // {
-  //   path: '/test/:id',
-  //   name: 'test',
-  //   component: () => import('@/views/PreviewPage.vue'),
-  // },
 ];
 
 const router = createRouter({

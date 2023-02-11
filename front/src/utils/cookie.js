@@ -3,7 +3,6 @@ function getTokenFromCookie() {
     /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
     '$1',
   );
-  // return document.cookie.token;
 }
 
 function deleteCookie(value) {
