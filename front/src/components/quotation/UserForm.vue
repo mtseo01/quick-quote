@@ -1,4 +1,9 @@
 <template>
+  <base-modal v-if="modal" @close="modal = false">
+    <template #default>
+      <p>{{ modalMessage }}</p>
+    </template>
+  </base-modal>
   <form @change="sendData" @submit.prevent>
     <div class="form-head">
       <div>공급자</div>
@@ -47,6 +52,8 @@ export default {
         businessType: '',
         businessItem: '',
       },
+      modal: false,
+      modalMessage: '',
     };
   },
 
@@ -56,15 +63,20 @@ export default {
   unmounted() {},
   methods: {
     async getUserInfo() {
-      try {
-        const { data } = await getUserInfo();
-        // const email = data.user.email.split('@');
-        this.user = data.user;
-        // this.user.email = email;
-        console.log(data);
-        this.sendData();
-      } catch (error) {
-        console.log(error.response.data.message);
+      if (this.$store.getters.isLogin) {
+        try {
+          const { data } = await getUserInfo();
+          this.user = data.user;
+          console.log(data);
+          this.sendData();
+        } catch (error) {
+          this.modalMessage =
+            error.response.data.message || '로그인이 필요합니다.';
+          this.modal = true;
+        }
+      } else {
+        this.modalMessage = '로그인이 필요합니다.';
+        this.modal = true;
       }
     },
 
