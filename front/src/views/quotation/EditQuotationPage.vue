@@ -29,8 +29,9 @@
       :amountData="amount"
       :noteData="note"
     />
-    <base-modal v-if="modal" title="견적서 제목" @close="modal = false">
+    <base-modal v-if="modal" title="견적서 제목" @close="closeModal">
       <template #default>
+        <p>{{ modalMessage }}</p>
         <input
           class="input-title"
           type="text"
@@ -88,6 +89,7 @@ export default {
       note: '',
       getQuotationData: false,
       modal: false,
+      modalMessage: '',
     };
   },
   setup() {},
@@ -131,26 +133,28 @@ export default {
     },
     async update() {
       // 로그인 여부에 확인 후 타이틀 입력하기
-      const id = this.$route.params.id;
-      const data = {
-        quoteTitle: this.quoteTitle,
-        quoteNumber: this.quoteNumber,
-        quoteDate: this.quoteDate,
-        user: this.user,
-        client: this.client,
-        products: this.productList,
-        note: this.note,
-        amount: this.amount,
-      };
-      try {
-        const res = await updateQuotation(id, data);
-        this.modal = false;
-        this.$router.push('/quotations/list');
-        console.log(res);
-
-        // res.data.doc.
-      } catch (error) {
-        console.log(error);
+      if (!this.$store.getters.isLogin) {
+        this.modalMessage = '로그인이 필요합니다.';
+      } else {
+        const id = this.$route.params.id;
+        const data = {
+          quoteTitle: this.quoteTitle,
+          quoteNumber: this.quoteNumber,
+          quoteDate: this.quoteDate,
+          user: this.user,
+          client: this.client,
+          products: this.productList,
+          note: this.note,
+          amount: this.amount,
+        };
+        try {
+          const res = await updateQuotation(id, data);
+          this.modalMessage = '견적서가 수정되었습니다.';
+          console.log(res);
+        } catch (error) {
+          this.modalMessage = '견적서 수정을 실패하였습니다.';
+          console.log(error);
+        }
       }
     },
     create() {
@@ -175,6 +179,10 @@ export default {
         ]);
       });
       makePdf(quoteObj, userObj, clientObj, productArr);
+    },
+    closeModal() {
+      this.modal = false;
+      this.modalMessage = '';
     },
   },
 };
