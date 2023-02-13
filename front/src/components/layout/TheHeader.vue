@@ -1,7 +1,7 @@
 <template>
   <nav class="nav-container">
     <div>
-      <router-link class="logo" :to="{ name: 'main' }">Quotation</router-link>
+      <router-link class="logo" :to="{ name: 'main' }">Q.Quote</router-link>
     </div>
     <ul>
       <li v-if="isLogin">
