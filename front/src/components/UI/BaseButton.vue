@@ -25,6 +25,21 @@ button {
 button:hover {
   background-color: rgb(111, 148, 192);
 }
+.large {
+  display: block;
+  padding: 5px 12px;
+  margin: 6px 0 6px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  color: white;
+  width: 100%;
+  cursor: pointer;
+  background-color: rgb(73, 109, 154);
+}
+.large:hover {
+  background-color: rgb(111, 148, 192);
+}
 
 .comfirm {
   background-color: rgb(73, 154, 73);
