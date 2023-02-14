@@ -19,17 +19,12 @@ export default {
     return {};
   },
   setup() {},
-  created() {
-    this.checkAuth();
-  },
+  created() {},
   mounted() {},
   unmounted() {},
   methods: {
     moveQuotePage() {
       this.$router.push('/quotations');
-    },
-    checkAuth() {
-      this.$store.commit('setToken');
     },
   },
 };

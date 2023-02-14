@@ -18,16 +18,10 @@ export default {
     return {};
   },
   setup() {},
-  created() {
-    this.setToken();
-  },
+  created() {},
   mounted() {},
   unmounted() {},
-  methods: {
-    setToken() {
-      this.$store.commit('setToken');
-    },
-  },
+  methods: {},
 };
 </script>
 
