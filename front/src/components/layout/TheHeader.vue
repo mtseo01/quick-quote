@@ -44,6 +44,7 @@
   </nav>
 </template>
 <script>
+import { logoutUser } from '@/api/user';
 export default {
   components: {},
   computed: {
@@ -64,9 +65,15 @@ export default {
   mounted() {},
   unmounted() {},
   methods: {
-    logout() {
-      this.$store.commit('logout');
-      this.$router.replace({ name: 'main' });
+    async logout() {
+      try {
+        const res = await logoutUser();
+        console.log(res);
+        this.$store.commit('logout');
+        this.$router.replace({ name: 'main' });
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
