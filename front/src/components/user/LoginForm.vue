@@ -57,6 +57,7 @@ export default {
           const response = await loginUser(userObj);
           console.log(response.data);
           this.alertMessage = response.data.message;
+          this.$store.commit('login');
           this.$router.push({ name: 'main' });
         } catch (error) {
           console.log(error.response.data.message);

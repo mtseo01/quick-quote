@@ -1,28 +1,27 @@
 import { createStore } from 'vuex';
-import { deleteCookie, getTokenFromCookie } from '@/utils/cookie';
+import {
+  getAuthFromCookie,
+  saveAuthToCookie,
+  deleteCookie,
+} from '@/utils/cookie';
 export default createStore({
   state: {
-    token: getTokenFromCookie() || '',
+    isLogin: getAuthFromCookie() || '',
   },
   getters: {
     isLogin(state) {
-      return !!state.token || getTokenFromCookie();
-    },
-    getToken(state) {
-      return state.token;
+      return !!state.isLogin || getAuthFromCookie();
     },
   },
   mutations: {
-    setToken(state) {
-      state.token = getTokenFromCookie();
-    },
     login(state) {
       state.isLogin = true;
-      state.token = getTokenFromCookie();
+      saveAuthToCookie(true);
     },
     logout(state) {
-      state.token = '';
-      deleteCookie('token');
+      state.isLogin = '';
+      saveAuthToCookie();
+      deleteCookie('is_login');
     },
   },
   actions: {},
