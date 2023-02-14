@@ -9,6 +9,9 @@ router.post('/signup', userController.signup);
 // 로그인 API
 router.post('/login', userController.login);
 
+// 로그아웃 API
+router.get('/logout', userController.logout);
+
 // 특정 유저 정보 가져오기 API
 router.get('/information', checkAuth, userController.getUserInfo);
 

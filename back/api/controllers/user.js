@@ -6,9 +6,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const cookieOption = {
-  httpOnly: true,
-  sameSite: 'none',
-  secure: true,
+  httpOnly: true, // 스크립트에서 접근 불가로 설정
+  sameSite: 'lax',
+  secure: false, // https
   domain: 'localhost',
 };
 
@@ -75,7 +75,7 @@ exports.login = (req, res) => {
               },
               process.env.JWT_KEY,
               {
-                expiresIn: '1h',
+                expiresIn: '3h',
               },
             );
             return res.status(200).cookie('token', token, cookieOption).json({
@@ -96,6 +96,17 @@ exports.login = (req, res) => {
         success: false,
         error: err,
       });
+    });
+};
+
+exports.logout = (req, res) => {
+  return res
+    .cookie('token', 'deleted', {
+      ...cookieOption,
+      maxAge: -1,
+    })
+    .json({
+      message: '로그아웃 되었습니다.',
     });
 };
 
