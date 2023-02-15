@@ -3,7 +3,7 @@
     <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
       {{ alertMessage }}
     </alert-block>
-    <form class="signup-form" @submit.prevent>
+    <base-form class="signup-form" @submit.prevent>
       <div>
         <label for="email">email</label>
         <input id="email" type="text" v-model="email" />
@@ -44,7 +44,7 @@
         </div>
       </div>
       <base-button mode="large-comfirm" @click="signup">회원가입</base-button>
-    </form>
+    </base-form>
     <div class="login-form">
       <span>이미 회원이신가요?</span>
       <router-link :to="{ name: 'login' }">로그인</router-link>
@@ -113,13 +113,6 @@ export default {
 };
 </script>
 <style scoped>
-form {
-  border-radius: 8px;
-  padding: 12px 20px 20px;
-  background: rgba(59, 65, 75, 0.836);
-  font-size: 14px;
-  /* font-weight: 500; */
-}
 label {
   display: block;
   font-size: 14px;

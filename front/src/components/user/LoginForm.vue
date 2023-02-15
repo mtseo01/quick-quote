@@ -2,18 +2,17 @@
   <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
     <p>{{ alertMessage }}</p>
   </alert-block>
-  <form class="login-form" @submit.prevent>
+  <base-form class="login-form" @submit.prevent>
     <div class="email-form">
       <label for="email">email</label>
-      <input id="email" autofocus type="text" v-model="email" />
+      <input id="email" type="text" v-model="email" />
     </div>
     <div>
       <label for="password">password</label>
       <input id="password" type="password" v-model="password" />
     </div>
     <base-button mode="large-comfirm" @click="login">로그인</base-button>
-  </form>
-
+  </base-form>
   <div class="signup-form">
     <span>회원가입이 필요하세요?</span>
     <router-link :to="{ name: 'signup' }">회원가입</router-link>
@@ -76,13 +75,6 @@ export default {
 };
 </script>
 <style scoped>
-form {
-  border-radius: 8px;
-  padding: 12px 20px 20px;
-  background: rgba(59, 65, 75, 0.836);
-  font-size: 14px;
-  /* font-weight: 500; */
-}
 div .signup-form {
   /* border: 0.8px solid #9aa2ab; */
   display: flex;
@@ -108,7 +100,7 @@ label {
   margin-bottom: 2px;
   text-align: left;
 }
-.login-form input {
+input {
   padding: 5px 12px;
   margin-top: 4px;
   margin-bottom: 16px;

@@ -2,7 +2,7 @@
   <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
     <p>{{ alertMessage }}</p>
   </alert-block>
-  <form @submit.prevent>
+  <base-form @submit.prevent>
     <div>
       <label for="password">password</label>
       <input
@@ -25,7 +25,7 @@
       />
     </div>
     <base-button mode="large-cancel" @click="deleteOne()">탈퇴하기</base-button>
-  </form>
+  </base-form>
 </template>
 <script>
 // import axios from 'axios';
@@ -77,13 +77,6 @@ export default {
 };
 </script>
 <style scoped>
-form {
-  width: 320px;
-  padding: 20px 20px;
-  border-radius: 8px;
-  text-align: center;
-  background: rgba(59, 65, 75, 0.836);
-}
 label {
   display: block;
   font-size: 14px;

@@ -2,8 +2,7 @@
   <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
     {{ alertMessage }}
   </alert-block>
-
-  <form @submit.prevent>
+  <base-form @submit.prevent>
     <div>
       <label for="password">password</label>
       <input
@@ -38,7 +37,7 @@
     <base-button mode="large-cancel" @click="update()"
       >비빌번호 변경</base-button
     >
-  </form>
+  </base-form>
 </template>
 <script>
 import { updatePassword } from '@/api/user';
@@ -93,13 +92,6 @@ export default {
 };
 </script>
 <style scoped>
-form {
-  width: 320px;
-  padding: 20px 20px;
-  border-radius: 8px;
-  text-align: center;
-  background: rgba(59, 65, 75, 0.836);
-}
 label {
   display: block;
   font-size: 14px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="user-info-form">
+  <base-form>
     <p>{{ user.companyName }}</p>
     <p>{{ user.companyRegiNum }}</p>
     <p>{{ user.companyAddress }}</p>
@@ -11,10 +11,10 @@
     <br />
     <base-button @click="updateUser(user.userId)">수정하기</base-button>
     <base-button @click="editPassword(user.userId)">비빌번호 변경</base-button>
-    <base-button mode="cancel" @click="deleteUser(user.userId)"
-      >탈퇴하기</base-button
-    >
-  </div>
+    <base-button mode="cancel" @click="deleteUser(user.userId)">
+      탈퇴하기
+    </base-button>
+  </base-form>
 </template>
 <script>
 import { getUserInfo } from '@/api/user';
@@ -63,13 +63,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-.user-info-form {
-  border-radius: 8px;
-  padding: 20px 20px;
-  /* background: #12202f; */
-  background: rgba(59, 65, 75, 0.836);
-  font-size: 14px;
-  margin-top: 20px;
-}
-</style>
+<style scoped></style>

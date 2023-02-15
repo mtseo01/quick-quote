@@ -2,7 +2,7 @@
   <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
     <p>{{ alertMessage }}</p>
   </alert-block>
-  <form @submit.prevent="update(user.userId)">
+  <base-form @submit.prevent="update(user.userId)">
     <div>
       <input placeholder="상호명" type="text" v-model="user.companyName" />
     </div>
@@ -31,7 +31,7 @@
       <input placeholder="업태" type="text" v-model="user.businessItem" />
     </div>
     <base-button mode="large-comfirm" type="submit">변경하기</base-button>
-  </form>
+  </base-form>
 </template>
 <script>
 import { getUserInfo, updateUser } from '@/api/user';
@@ -105,13 +105,6 @@ export default {
 };
 </script>
 <style scoped>
-form {
-  border-radius: 8px;
-  padding: 12px 20px 20px;
-  background: rgba(59, 65, 75, 0.836);
-  font-size: 14px;
-  /* font-weight: 500; */
-}
 input {
   padding: 5px 12px;
   margin-top: 4px;
