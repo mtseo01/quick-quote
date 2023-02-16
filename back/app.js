@@ -11,6 +11,7 @@ const morgan = require('morgan');
 const userRouter = require('./api/routes/user');
 const clientRouter = require('./api/routes/client');
 const quotationRouter = require('./api/routes/quotatation');
+const productRouter = require('./api/routes/product');
 
 mongoose.set('strictQuery', true);
 mongoose.connect(
@@ -29,5 +30,6 @@ app.use(cookieParser());
 app.use('/users', userRouter);
 app.use('/clients', clientRouter);
 app.use('/quotations', quotationRouter);
+app.use('/products', productRouter);
 
 module.exports = app;
