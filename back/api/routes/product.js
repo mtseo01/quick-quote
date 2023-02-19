@@ -12,4 +12,7 @@ router.get('/', checkAuth, productController.getProductAll);
 // 특정 제품 조회 API
 router.get('/:id', checkAuth, productController.getProduct);
 
+// 제품 정보 수정 API
+router.put('/:id', checkAuth, productController.updateProduct);
+
 module.exports = router;

@@ -83,3 +83,18 @@ exports.getProduct = (req, res) => {
       });
     });
 };
+
+exports.updateProduct = (req, res) => {
+  let productId = req.params.id;
+  Product.findByIdAndUpdate(productId, { $set: req.body }, { new: true })
+    .then(result => {
+      return res.status(200).json({
+        success: true,
+        message: '제품 정보가 수정 되었습니다.',
+        result,
+      });
+    })
+    .catch(err => {
+      return res.status(500).json({ error: err });
+    });
+};
