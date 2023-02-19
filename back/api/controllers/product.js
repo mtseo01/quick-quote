@@ -42,6 +42,7 @@ exports.getProductAll = (req, res) => {
       } else {
         return res.status(200).json({
           success: true,
+          message: '제품 데이터를 조회하였습니다.',
           count: docs.length,
           docs,
         });
@@ -70,6 +71,7 @@ exports.getProduct = (req, res) => {
       } else {
         return res.status(200).json({
           success: true,
+          message: '제품 데이터를 조회하였습니다.',
           doc,
         });
       }
