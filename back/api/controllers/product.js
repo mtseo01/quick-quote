@@ -28,3 +28,56 @@ exports.createProduct = (req, res) => {
       });
     });
 };
+
+exports.getProductAll = (req, res) => {
+  const createrId = req.userData.userId;
+  Product.find({ creater: createrId })
+    .exec()
+    .then(docs => {
+      if (docs.length <= 0) {
+        return res.status(404).json({
+          success: false,
+          message: '제품 데이터가 없습니다.',
+        });
+      } else {
+        return res.status(200).json({
+          success: true,
+          count: docs.length,
+          docs,
+        });
+      }
+    })
+    .catch(err => {
+      return res.status(500).json({
+        success: false,
+        error: err,
+      });
+    });
+};
+
+exports.getProduct = (req, res) => {
+  const productId = req.params.id;
+  let createrId = req.userData.userId;
+  Product.findById({ _id: productId })
+    .populate('creater', '_id')
+    .exec()
+    .then(doc => {
+      if (doc.creater.id !== createrId) {
+        return res.status(401).json({
+          success: false,
+          message: '권한이 없습니다.',
+        });
+      } else {
+        return res.status(200).json({
+          success: true,
+          doc,
+        });
+      }
+    })
+    .catch(err => {
+      return res.status(500).json({
+        success: false,
+        error: err,
+      });
+    });
+};
