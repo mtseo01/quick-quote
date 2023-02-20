@@ -15,4 +15,7 @@ router.get('/:id', checkAuth, productController.getProduct);
 // 제품 정보 수정 API
 router.put('/:id', checkAuth, productController.updateProduct);
 
+// 특정 제품 삭제 API
+router.delete('/:id', checkAuth, productController.deleteProduct);
+
 module.exports = router;

@@ -98,3 +98,23 @@ exports.updateProduct = (req, res) => {
       return res.status(500).json({ error: err });
     });
 };
+
+exports.deleteProduct = (req, res) => {
+  let productId = req.params.id;
+  Product.deleteOne({ _id: productId })
+    .exec()
+    .then(result => {
+      return res.status(200).json({
+        success: true,
+        message: '제품 정보를 삭제하였습니다.',
+        id: result._id,
+      });
+    })
+    .catch(err => {
+      return res.status(500).json({
+        success: false,
+        messgae: '삭제를 실패하였습니다.',
+        error: err,
+      });
+    });
+};
