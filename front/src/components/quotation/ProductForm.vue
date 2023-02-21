@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 총 견적 금액 -->
     <div class="amount-area">
       <h3>총 견적 금액</h3>
       <h3 id="amount">₩ {{ amount.toLocaleString('ko-KR') }}</h3>
@@ -7,7 +8,6 @@
     <!-- 테이블 -->
     <div class="container-table">
       <table>
-        <!-- <th>순번</th> -->
         <th>품목</th>
         <th>수량</th>
         <th>단가</th>
@@ -23,10 +23,11 @@
           v-for="(product, i) in productList"
           :key="product"
         >
-          <!-- <td class="head-num">{{ i + 1 }}</td> -->
+          <!-- 품목 -->
           <td>
             <input class="head-product" type="text" v-model="product.name" />
           </td>
+          <!-- 수량 -->
           <td>
             <input
               class="head-quantity"
@@ -35,6 +36,7 @@
               v-model.number="product.quantity"
             />
           </td>
+          <!-- 단가 -->
           <td>
             <input
               class="head-unit-price"
@@ -43,6 +45,7 @@
               v-model.number="product.unitPrice"
             />
           </td>
+          <!-- VAT -->
           <td>
             <select
               class="head-rate"
@@ -54,19 +57,19 @@
               <option>10</option>
             </select>
           </td>
+          <!-- 공급가액 -->
           <td>
-            <!-- <input type="text" v-model="product.price" /> -->
             <input
               class="head-price"
               type="text"
               v-model.number="product.price"
             />
-            <!-- {{ calPrice }} -->
           </td>
-
+          <!-- 세액 -->
           <td>
             <input class="head-tax" type="text" v-model.number="product.tax" />
           </td>
+          <!-- 합계 -->
           <td>
             <input
               class="head-sub-price"
@@ -113,7 +116,6 @@ export default {
       note: '',
     };
   },
-
   methods: {
     addProductList() {
       this.productList.push({
@@ -125,7 +127,6 @@ export default {
         subTotal: '',
       });
     },
-
     deleteProductList(index) {
       if (this.productList.length === 1) {
         console.log('더 이상 삭제할 수 없습니다.');
@@ -134,7 +135,6 @@ export default {
       this.productList.splice(index, 1);
       this.sendProductData;
     },
-
     sendProductData() {
       return this.$emit('product-data', this.productList, this.amount);
     },
@@ -142,10 +142,15 @@ export default {
       return this.$emit('note-data', this.note);
     },
     calPrice(i) {
-      this.productList[i].price =
-        parseInt(this.productList[i].quantity) *
-        parseInt(this.productList[i].unitPrice);
+      if (
+        (this.productList[i].unitPrice == '') |
+        (this.productList[i].quantity == '')
+      ) {
+        return false;
+      }
 
+      this.productList[i].price =
+        this.productList[i].quantity * this.productList[i].unitPrice;
       this.calSubTotal(i);
       this.calAmount();
     },
@@ -165,7 +170,7 @@ export default {
     calAmount() {
       let result = 0;
       this.productList.forEach(value => {
-        result += value.subTotal;
+        result += parseInt(value.subTotal);
       });
       this.amount = result;
     },
@@ -183,7 +188,6 @@ export default {
   background: rgba(59, 65, 75, 0.836);
   border: 1px solid #b1b1b1;
 }
-
 table {
   margin: 8px 0 8px;
   width: 900px;
@@ -193,7 +197,6 @@ table {
   background: rgba(59, 65, 75, 0.836);
   border: 1px solid #b1b1b1;
 }
-
 table th {
   border-bottom: 1px solid snow;
   padding-bottom: 5px;
@@ -201,7 +204,6 @@ table th {
 table input {
   text-align: right;
 }
-
 input {
   padding: 5px 12px;
   margin: 4px 0 4px;
@@ -216,7 +218,6 @@ select {
   width: 100%;
   height: 25px;
 }
-
 .head-product {
   text-align: left;
   width: 250px;
@@ -246,7 +247,6 @@ select {
   width: 120px;
   min-width: 35px;
 }
-
 textarea {
   margin: 8px 0 8px;
   border-radius: 8px;
