@@ -1,4 +1,21 @@
 <template>
+  <base-modal v-if="modal" title="제품 목록" @close="modal = false">
+    <template #default>
+      <div>
+        <p>{{ modalMessage }}</p>
+      </div>
+      <div
+        class="select-item"
+        v-for="(item, index) in fetchProducts"
+        :key="item._id"
+      >
+        <h4 @click="selectItem(index)">{{ item.productName }}</h4>
+        <div class="content-item-info">
+          <p>단가 : {{ item.unitPrice.toLocaleString('ko-KR') }}</p>
+        </div>
+      </div>
+    </template>
+  </base-modal>
   <div>
     <!-- 총 견적 금액 -->
     <div class="amount-area">
@@ -25,7 +42,14 @@
         >
           <!-- 품목 -->
           <td>
-            <input class="head-product" type="text" v-model="product.name" />
+            <div class="head-product">
+              <input
+                class="head-product-input"
+                type="text"
+                v-model="product.name"
+              />
+              <base-button @click="fetchData(i)">검색</base-button>
+            </div>
           </td>
           <!-- 수량 -->
           <td>
@@ -96,6 +120,7 @@
   </div>
 </template>
 <script>
+import { getProductsAll } from '@/api/product';
 export default {
   props: ['productsData', 'amountData', 'noteData'],
   emits: ['product-data', 'note-data'],
@@ -105,6 +130,10 @@ export default {
       amount: this.amountData,
       productList: this.productsData,
       note: this.noteData,
+      modal: false,
+      modalMessage: '',
+      fetchProducts: [],
+      productListIndex: null,
     };
   },
 
@@ -169,6 +198,38 @@ export default {
       });
       this.amount = result;
     },
+    closeModal() {
+      this.modal = false;
+      this.modalMessage = '';
+      this.productListIndex = null;
+    },
+    async fetchData(i) {
+      if (!this.$store.getters.isLogin) {
+        this.modalMessage = '로그인이 필요합니다.';
+        this.modal = true;
+      } else {
+        try {
+          this.productListIndex = i;
+          const res = await getProductsAll();
+          this.modalMessage = res.data.message;
+          this.fetchProducts = res.data.docs;
+          this.modal = true;
+        } catch (error) {
+          this.modalMessage = error.response.data.message;
+          this.modal = true;
+          this.productListIndex = null;
+        }
+      }
+    },
+    selectItem(index) {
+      this.productList[this.productListIndex].name =
+        this.fetchProducts[index].productName;
+      this.productList[this.productListIndex].unitPrice =
+        this.fetchProducts[index].unitPrice;
+      this.sendProductData();
+      this.productListIndex = null;
+      this.modal = false;
+    },
   },
 };
 </script>
@@ -218,10 +279,16 @@ select {
 }
 
 .head-product {
+  display: flex;
+  align-items: center;
+}
+
+.head-product-input {
   text-align: left;
-  width: 250px;
+  width: 210px;
   /* min-width: 35px; */
 }
+
 .head-quantity {
   width: 50px;
   /* min-width: 35px; */
@@ -252,5 +319,10 @@ textarea {
   border-radius: 8px;
   padding: 8px;
   width: 100%;
+}
+
+.select-item {
+  cursor: pointer;
+  margin-bottom: 8px;
 }
 </style>
