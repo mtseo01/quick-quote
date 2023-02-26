@@ -77,6 +77,12 @@ const routes = [
     component: () => import('@/views/client/EditClient.vue'),
     meta: { requireAuth: true },
   },
+  {
+    path: '/products',
+    name: 'products',
+    component: () => import('@/views/product/ProductListPage.vue'),
+    meta: { requireAuth: true },
+  },
 ];
 
 const router = createRouter({
