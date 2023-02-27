@@ -1,8 +1,5 @@
 <template>
   <div>
-    <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
-      <p>{{ alertMessage }}</p>
-    </alert-block>
     <table>
       <tr class="head">
         <th class="head-company">Company List</th>
@@ -28,39 +25,26 @@
   </div>
 </template>
 <script>
-import { getClientAll, deleteClient } from '@/api/client';
+import { deleteClient } from '@/api/client';
 export default {
+  emits: ['alert-message'],
+  props: {
+    data: {
+      type: Array,
+      required: true,
+    },
+  },
   components: {},
   data() {
     return {
-      clients: [],
-      alertMessage: '',
-      alert: false,
-      alertMode: null,
+      clients: this.data,
     };
   },
   setup() {},
-  created() {
-    this.getClients();
-  },
+  created() {},
   mounted() {},
   unmounted() {},
   methods: {
-    async getClients() {
-      try {
-        const { data } = await getClientAll();
-        this.clients = data.docs;
-        this.alertMessage = data.message;
-        this.alertMode = 'success';
-        this.alert = true;
-        console.log(data);
-      } catch (error) {
-        console.log(error.response.data.message);
-        this.alertMessage = error.response.data.message;
-        this.alertMode = 'error';
-        this.alert = true;
-      }
-    },
     getClient(clientId) {
       console.log(clientId);
       this.$router.push('/clients/' + clientId);
@@ -69,20 +53,27 @@ export default {
       try {
         if (confirm('거래처 정보를 삭제하시겠습니까?')) {
           const res = await deleteClient(clientId);
-          console.log(res);
-          this.getClients();
+          // 삭제 완료시 clients 업데이트해서 컴포넌트 재 랜더링
+          const index = this.clients.findIndex(
+            client => client._id === clientId,
+          );
+          this.clients.splice(index, 1);
+
+          // emit
+          const alertObj = {
+            alertMessage: res.data.message,
+            alertMode: 'success',
+          };
+          this.$emit('alert-message', alertObj);
         }
       } catch (error) {
-        console.log(error);
-        this.alertMessage = '삭제를 실패하였습니다.';
-        this.alertMode = 'error';
-        this.alert = true;
+        // emit
+        const alertObj = {
+          alertMessage: error.response.data.message,
+          alertMode: 'error',
+        };
+        this.$emit('alert-message', alertObj);
       }
-    },
-    closeAlert() {
-      this.alert = false;
-      this.alertMessage = '';
-      this.alertMode = null;
     },
   },
 };
