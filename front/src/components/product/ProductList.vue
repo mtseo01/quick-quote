@@ -25,6 +25,7 @@
   </div>
 </template>
 <script>
+import { deleteProduct } from '@/api/product';
 export default {
   props: {
     data: {
@@ -38,7 +39,14 @@ export default {
       fetchProducts: this.data,
     };
   },
-  methods: {},
+  methods: {
+    async deleteBtn(id) {
+      await deleteProduct(id);
+      // 삭제가 완료되면 fetchProducts 상태를 업데이트하여 리랜더링
+      const index = this.fetchProducts.findIndex(product => product._id === id);
+      this.fetchProducts.splice(index, 1);
+    },
+  },
 };
 </script>
 <style scoped>
