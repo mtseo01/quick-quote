@@ -29,6 +29,9 @@
           <li>
             <router-link :to="{ name: 'products' }">제품 목록</router-link>
           </li>
+          <li>
+            <router-link :to="{ name: 'createProduct' }">제품 등록</router-link>
+          </li>
           <hr />
           <li @click="logout">
             <a href="javascript:;">로그아웃</a>

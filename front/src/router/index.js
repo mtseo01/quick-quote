@@ -83,6 +83,12 @@ const routes = [
     component: () => import('@/views/product/ProductListPage.vue'),
     meta: { requireAuth: true },
   },
+  {
+    path: '/products/create',
+    name: 'createProduct',
+    component: () => import('@/views/product/CreateProductPage.vue'),
+    meta: { requireAuth: true },
+  },
 ];
 
 const router = createRouter({
