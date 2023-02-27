@@ -1,8 +1,5 @@
 <template>
   <div>
-    <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
-      <p>{{ alertMessage }}</p>
-    </alert-block>
     <table>
       <tr class="head">
         <th class="head-product">Products List</th>
@@ -12,7 +9,8 @@
           <h4>{{ product.productName }}</h4>
           <div class="content-product">
             <div class="content-product-info">
-              <p>{{ product.unitPrice }}</p>
+              <p>단가 : {{ product.unitPrice.toLocaleString('ko-KR') }}</p>
+              <p>카테고리 : {{ product.category }}</p>
             </div>
             <div>
               <base-button @click="getProduct(product._id)">수정</base-button>
@@ -27,44 +25,20 @@
   </div>
 </template>
 <script>
-import { getProductsAll } from '@/api/product';
 export default {
+  props: {
+    data: {
+      type: Array,
+      required: true,
+    },
+  },
   components: {},
   data() {
     return {
-      alert: false,
-      alertMessage: '',
-      alertMode: null,
-      fetchProducts: [],
+      fetchProducts: this.data,
     };
   },
-  setup() {},
-  created() {
-    this.fetchData();
-  },
-  mounted() {},
-  unmounted() {},
-  methods: {
-    async fetchData() {
-      try {
-        const res = await getProductsAll();
-        this.fetchProducts = res.data.docs;
-        this.alertMessage = res.data.message;
-        this.alert = true;
-        this.alertMode = 'success';
-      } catch (error) {
-        this.alertMessage = error.response.data.message;
-        this.alert = true;
-        this.alertMode = 'error';
-        console.log(error);
-      }
-    },
-    closeAlert() {
-      this.alert = false;
-      this.alertMessage = '';
-      this.alertMode = null;
-    },
-  },
+  methods: {},
 };
 </script>
 <style scoped>
