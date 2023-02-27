@@ -8,7 +8,7 @@ exports.createProduct = (req, res) => {
     _id: new mongoose.Types.ObjectId(),
     productName: req.body.productName,
     unitPrice: req.body.unitPrice,
-    inventory: req.body.inventory,
+    category: req.body.category,
     creater: createrId,
   });
   product
