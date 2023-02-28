@@ -27,6 +27,7 @@
 <script>
 import { deleteProduct } from '@/api/product';
 export default {
+  emits: ['alert-message'],
   props: {
     data: {
       type: Array,
@@ -41,10 +42,30 @@ export default {
   },
   methods: {
     async deleteBtn(id) {
-      await deleteProduct(id);
-      // 삭제가 완료되면 fetchProducts 상태를 업데이트하여 리랜더링
-      const index = this.fetchProducts.findIndex(product => product._id === id);
-      this.fetchProducts.splice(index, 1);
+      try {
+        if (confirm('해당 제품을 삭제하시겠습니까?')) {
+          const res = await deleteProduct(id);
+          // 삭제가 완료되면 fetchProducts 상태를 업데이트하여 리랜더링
+          const index = this.fetchProducts.findIndex(
+            product => product._id === id,
+          );
+          this.fetchProducts.splice(index, 1);
+
+          // emit
+          const alertObj = {
+            alertMessage: res.data.message,
+            alertMode: 'success',
+          };
+          this.$emit('alert-message', alertObj);
+        }
+      } catch (error) {
+        // emit
+        const alertObj = {
+          alertMessage: error.response.data.message,
+          alertMode: 'error',
+        };
+        this.$emit('alert-message', alertObj);
+      }
     },
   },
 };
