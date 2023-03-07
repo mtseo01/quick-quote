@@ -4,7 +4,11 @@
     <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
       <p>{{ alertMessage }}</p>
     </alert-block>
-    <ProductList v-if="fetched" :data="fetchProducts" />
+    <ProductList
+      v-if="fetched"
+      :data="fetchProducts"
+      @alert-message="setAlert"
+    />
   </div>
 </template>
 <script>
@@ -47,6 +51,11 @@ export default {
       this.alert = false;
       this.alertMessage = '';
       this.alertMode = null;
+    },
+    setAlert(alertObj) {
+      this.alertMessage = alertObj.alertMessage;
+      this.alertMode = alertObj.alertMode;
+      this.alert = true;
     },
   },
 };
