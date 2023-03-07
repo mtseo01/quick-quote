@@ -141,11 +141,12 @@ export default {
     addProductList() {
       this.productList.push({
         name: '',
-        quantity: '',
-        unitPrice: '',
-        price: '',
-        tax: '',
-        subTotal: '',
+        quantity: 0,
+        unitPrice: 0,
+        price: 0,
+        rate: 0,
+        tax: 0,
+        subTotal: 0,
       });
     },
 
@@ -155,6 +156,7 @@ export default {
         return 0;
       }
       this.productList.splice(index, 1);
+      this.calAmount();
       this.sendProductData;
     },
 

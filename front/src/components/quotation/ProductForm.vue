@@ -130,12 +130,12 @@ export default {
       productList: [
         {
           name: '',
-          quantity: '',
-          unitPrice: '',
-          price: '',
-          rate: '',
-          tax: '',
-          subTotal: '',
+          quantity: 0,
+          unitPrice: 0,
+          price: 0,
+          rate: 0,
+          tax: 0,
+          subTotal: 0,
         },
       ],
       note: '',
@@ -149,11 +149,12 @@ export default {
     addProductList() {
       this.productList.push({
         name: '',
-        quantity: '',
-        unitPrice: '',
-        price: '',
-        tax: '',
-        subTotal: '',
+        quantity: 0,
+        unitPrice: 0,
+        price: 0,
+        rate: 0,
+        tax: 0,
+        subTotal: 0,
       });
     },
     deleteProductList(index) {
@@ -162,6 +163,7 @@ export default {
         return 0;
       }
       this.productList.splice(index, 1);
+      this.calAmount();
       this.sendProductData;
     },
     sendProductData() {
@@ -177,7 +179,6 @@ export default {
       ) {
         return false;
       }
-
       this.productList[i].price =
         this.productList[i].quantity * this.productList[i].unitPrice;
       this.calSubTotal(i);
@@ -279,18 +280,15 @@ select {
   width: 100%;
   height: 25px;
 }
-
 .head-product {
   display: flex;
   align-items: center;
 }
-
 .head-product-input {
   text-align: left;
   width: 210px;
   /* min-width: 35px; */
 }
-
 .head-quantity {
   width: 50px;
   /* min-width: 35px; */
@@ -321,7 +319,6 @@ textarea {
   padding: 8px;
   width: 100%;
 }
-
 .select-item {
   cursor: pointer;
   margin-bottom: 8px;
