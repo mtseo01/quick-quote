@@ -1,8 +1,5 @@
 <template>
   <div>
-    <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
-      <p>{{ alertMessage }}</p>
-    </alert-block>
     <base-form>
       <div>
         <label for="">제품명</label>
@@ -25,12 +22,10 @@
 <script>
 import { createProduct } from '@/api/product';
 export default {
+  emits: ['alert-message'],
   components: {},
   data() {
     return {
-      alert: false,
-      alertMessage: '',
-      alertMode: null,
       productName: '',
       unitPrice: '',
       category: '',
@@ -46,21 +41,22 @@ export default {
       };
       try {
         const res = await createProduct(productObj);
-        this.alertMessage = res.data.message;
-        this.alertMode = 'success';
-        this.alert = true;
+
+        // emit
+        const alertObj = {
+          alertMessage: res.data.message,
+          alertMode: 'success',
+        };
+        this.$emit('alert-message', alertObj);
         console.log(res);
       } catch (error) {
-        console.log(error);
-        this.alertMessage = error.response.data.message;
-        this.alertMode = 'error';
-        this.alert = true;
+        // emit
+        const alertObj = {
+          alertMessage: error.response.data.message,
+          alertMode: 'error',
+        };
+        this.$emit('alert-message', alertObj);
       }
-    },
-    closeAlert() {
-      this.alert = false;
-      this.alertMessage = '';
-      this.alertMode = null;
     },
   },
 };
