@@ -89,6 +89,12 @@ const routes = [
     component: () => import('@/views/product/CreateProductPage.vue'),
     meta: { requireAuth: true },
   },
+  {
+    path: '/products/edit/:id',
+    name: 'editProduct',
+    component: () => import('@/views/product/EditProductPage.vue'),
+    meta: { requireAuth: true },
+  },
 ];
 
 const router = createRouter({
