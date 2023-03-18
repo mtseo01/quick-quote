@@ -14,22 +14,24 @@
         <input type="text" v-model="category" />
       </div>
       <div>
-        <base-button mode="large-comfirm" @click="update">수정</base-button>
+        <base-button mode="large-comfirm" @click="clickBtnHandler">
+          {{ btnName }}
+        </base-button>
       </div>
     </base-form>
   </div>
 </template>
 <script>
-import { updateProduct } from '@/api/product';
 export default {
-  emits: ['alert-message', 'form-data'],
-  props: ['fetchedData'],
+  emits: ['form-data'],
+  props: ['fetchedData', 'buttonName'],
   data() {
     return {
       productName: this.fetchedData.productName || '',
       unitPrice: this.fetchedData.unitPrice || '',
       category: this.fetchedData.category || '',
       productId: this.fetchedData._id || null,
+      btnName: this.buttonName,
     };
   },
   setup() {},
@@ -37,30 +39,13 @@ export default {
   mounted() {},
   unmounted() {},
   methods: {
-    async update() {
-      try {
-        const dataObj = {
-          productName: this.productName,
-          unitPrice: this.unitPrice,
-          category: this.category,
-        };
-        const res = await updateProduct(this.productId, dataObj);
-        // emit
-        const alertObj = {
-          alertMessage: res.data.message,
-          alertMode: 'success',
-        };
-        this.$emit('alert-message', alertObj);
-        console.log(res);
-      } catch (error) {
-        console.log(error);
-        // emit
-        const alertObj = {
-          alertMessage: error.response.data.message,
-          alertMode: 'error',
-        };
-        this.$emit('alert-message', alertObj);
-      }
+    clickBtnHandler() {
+      const dataObj = {
+        productName: this.productName,
+        unitPrice: this.unitPrice,
+        category: this.category,
+      };
+      this.$emit('form-data', dataObj);
     },
   },
 };
