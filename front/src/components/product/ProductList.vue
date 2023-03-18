@@ -13,7 +13,7 @@
               <p>카테고리 : {{ product.category }}</p>
             </div>
             <div>
-              <base-button @click="getProduct(product._id)">수정</base-button>
+              <base-button @click="editProduct(product._id)">수정</base-button>
               <base-button mode="cancel" @click="deleteBtn(product._id)"
                 >삭제</base-button
               >
@@ -66,6 +66,9 @@ export default {
         };
         this.$emit('alert-message', alertObj);
       }
+    },
+    editProduct(id) {
+      this.$router.push('products/edit/' + id);
     },
   },
 };
