@@ -4,13 +4,14 @@
     <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
       <p>{{ alertMessage }}</p>
     </alert-block>
-    <CreateForm @alert-message="setAlert" />
+    <ProductForm fetchedData="" @form-data="create" buttonName="생성" />
   </div>
 </template>
 <script>
-import CreateForm from '@/components/product/CreateForm.vue';
+import ProductForm from '@/components/product/ProductForm.vue';
+import { createProduct } from '@/api/product';
 export default {
-  components: { CreateForm },
+  components: { ProductForm },
   data() {
     return {
       alert: false,
@@ -19,6 +20,23 @@ export default {
     };
   },
   methods: {
+    async create(dataObj) {
+      try {
+        const res = await createProduct(dataObj);
+        const alertObj = {
+          alertMessage: res.data.message,
+          alertMode: 'success',
+        };
+        this.setAlert(alertObj);
+        console.log(res);
+      } catch (error) {
+        const alertObj = {
+          alertMessage: error.response.data.message,
+          alertMode: 'error',
+        };
+        this.setAlert(alertObj);
+      }
+    },
     closeAlert() {
       this.alert = false;
       this.alertMessage = '';
