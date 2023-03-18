@@ -4,18 +4,19 @@
     <alert-block v-if="alert" :mode="alertMode" @close-alert="closeAlert">
       <p>{{ alertMessage }}</p>
     </alert-block>
-    <EditForm
+    <ProductForm
       v-if="fetched"
       :fetchedData="fetchedData"
-      @alert-message="setAlert"
+      buttonName="수정"
+      @form-data="update"
     />
   </div>
 </template>
 <script>
-import EditForm from '@/components/product/EditForm.vue';
-import { getProduct } from '@/api/product';
+import ProductForm from '@/components/product/ProductForm.vue';
+import { getProduct, updateProduct } from '@/api/product';
 export default {
-  components: { EditForm },
+  components: { ProductForm },
   data() {
     return {
       alert: false,
@@ -23,6 +24,7 @@ export default {
       alertMessage: '',
       fetchedData: {},
       fetched: false,
+      productId: this.$route.params.id,
     };
   },
   setup() {},
@@ -34,8 +36,7 @@ export default {
   methods: {
     async fetchData() {
       try {
-        const productId = this.$route.params.id;
-        const res = await getProduct(productId);
+        const res = await getProduct(this.productId);
         this.fetchedData = res.data.doc;
         this.fetched = true;
 
@@ -45,6 +46,24 @@ export default {
         };
         this.setAlert(alertObj);
       } catch (error) {
+        const alertObj = {
+          alertMessage: error.response.data.message,
+          alertMode: 'error',
+        };
+        this.setAlert(alertObj);
+      }
+    },
+    async update(dataObj) {
+      try {
+        const res = await updateProduct(this.productId, dataObj);
+        const alertObj = {
+          alertMessage: res.data.message,
+          alertMode: 'success',
+        };
+        this.setAlert(alertObj);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
         const alertObj = {
           alertMessage: error.response.data.message,
           alertMode: 'error',
