@@ -27,6 +27,14 @@
 - 거래처 삭제 [코드 보기](https://github.com/mtseo01/quick-quote/blob/main/front/src/components/client/GetClients.vue#L52-L77)
 
 
+### 제품
+제품 불러오기 / 생성 / 수정
+- 견적서 작성 중 제품 불러오기 [코드 보기](https://github.com/mtseo01/quick-quote/blob/c45072c02e548eb53a55f79f60cb4029a9b36ad1/front/src/components/quotation/ProductForm.vue#L212-L238)
+- 제품 생성 페이지 [코드 보기](https://github.com/mtseo01/quick-quote/blob/main/front/src/views/product/CreateProductPage.vue)
+- 제품 수정 페이지(컴포넌트 재활용) [코드 보기](https://github.com/mtseo01/quick-quote/blob/main/front/src/views/product/EditProductPage.vue)
+- 제품 리스트 페이지 [코드 보기](https://github.com/mtseo01/quick-quote/blob/main/front/src/views/product/ProductListPage.vue)
+
+
 ### 상태관리
 Vuex
 - 유저 상태 관리 [코드 보기](https://github.com/mtseo01/quick-quote/blob/main/front/src/store/index.js)
